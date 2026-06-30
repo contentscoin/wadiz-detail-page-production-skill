@@ -23,13 +23,15 @@ This skill does not train a model or copy source Wadiz pages. It retrieves and a
 
 1. Product intake: collect product name, category, audience, offer, source URL, approved photos, factual claims, pricing, delivery/returns, restrictions, and required channel specs.
 2. Install gate: verify that the public Wadiz pack is installed, create/register a project if needed, attach the required packs, and run smoke tests.
-3. Fact map: separate verified facts, inferred benefits, and unsupported claims. Unsupported claims must be downgraded, removed, or marked evidence-pending.
-4. OpenCrab retrieval: query the active project for relevant category playbooks, section flow, copy patterns, visual/GIF patterns, claim-evidence rules, objection-resolution patterns, and production bridge rules.
-5. Cut blueprint: produce a cut-by-cut structure with role, user emotion, claim, evidence, image direction, copy density, CTA/FAQ/offers, and risk notes.
-6. Asset gate: decide which existing assets can be used as factual reference, which must be regenerated, and which must not be reused. For user-provided product photos, analyze product details and generate new scene prompts unless the user explicitly asks for direct compositing.
-7. Production: build the actual detail-page files, images, long image, gallery HTML, ZIP/package, or implementation artifacts requested by the user.
-8. QA: run practical verification before calling the work done. Check factual consistency, claim risk, Korean copy tone, mobile readability, text overlap, image fit, OCR legibility when possible, file sizes, and delivery format.
-9. Report: summarize what was produced, which OpenCrab project/packs were used, what passed QA, what remains evidence-pending, and where the files are.
+3. Production workflow: for any real page plan, cut blueprint, image prompt set, QA, or delivery package, read `references/production-workflow.md` before drafting the answer.
+4. Fact map: separate verified facts, inferred benefits, and unsupported claims. Unsupported claims must be downgraded, removed, or marked evidence-pending.
+5. OpenCrab retrieval: query the active project for relevant category playbooks, section flow, copy patterns, visual/GIF patterns, claim-evidence rules, objection-resolution patterns, and production bridge rules.
+6. Evidence matrix: map each required pack family to the production decision it changed. If evidence is weak, say `evidence_missing` instead of filling the gap with generic ecommerce advice.
+7. Cut blueprint: produce the required output template: product fact map, evidence matrix, page strategy, 12-cut or 15-cut plan, asset requirements, claim guard, and production readiness.
+8. Asset gate: decide which existing assets can be used as factual reference, which must be regenerated, and which must not be reused. For user-provided product photos, analyze product details and generate new scene prompts unless the user explicitly asks for direct compositing.
+9. Production: build the actual detail-page files, images, long image, gallery HTML, ZIP/package, or implementation artifacts requested by the user.
+10. QA: run practical verification before calling the work done. Check factual consistency, claim risk, Korean copy tone, mobile readability, text overlap, image fit, OCR legibility when possible, file sizes, and delivery format.
+11. Report: summarize what was produced, which OpenCrab project/packs were used, what passed QA, what remains evidence-pending, and where the files are.
 
 ## Hard Rules
 
@@ -41,9 +43,11 @@ This skill does not train a model or copy source Wadiz pages. It retrieves and a
 - If OpenCrab MCP/session is unavailable, say so and use local runbooks only for planning skeletons. Mark all pack-derived evidence as not live-verified.
 - If the public pack is not installed or the install gate fails, do not run as a pack-backed production skill. Report the missing listing/package/project/smoke-test step.
 - If retrieval returns only pack metadata, fallback rows, or unrelated chunks, treat the pack as not production-ready even when project package count is nonzero.
+- Never return only broad strategy for a production request. Return the concrete production template from `references/production-workflow.md`.
 
 ## References
 
+- Read `references/production-workflow.md` for any real detail-page plan, cut structure, image prompt, QA, or delivery task.
 - Read `references/opencrab-public-install.md` before sharing this skill publicly or using it outside a maintainer's private workspace.
 - Read `references/source-and-boundary.md` when preparing README, marketplace copy, compliance notes, or source attribution.
 

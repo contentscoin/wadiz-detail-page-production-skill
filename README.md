@@ -12,6 +12,7 @@
 
 - Codex skill 본문: `wadiz-detail-page-production/SKILL.md`
 - OpenCrab 팩 설치 및 프로젝트 등록 게이트
+- 실제 제작 워크플로우 reference
 - 팩 manifest 예시
 - 제작 과정 문서
 - 샘플 상품 brief와 샘플 산출물
@@ -84,6 +85,8 @@ $wadiz-detail-page-production 을 사용해서 이 상품의 와디즈 스타일
 - `runtime_execution_bridge`
 
 자세한 절차는 [OpenCrab 설치 게이트](wadiz-detail-page-production/references/opencrab-public-install.md)를 참고하세요.
+
+실제 상세페이지 제작 순서와 출력 템플릿은 [Production Workflow](wadiz-detail-page-production/references/production-workflow.md)를 참고하세요. 이 문서에는 fact map, evidence matrix, 12컷 구조, asset gate, claim guard, 이미지 생성 방향, QA checklist가 들어 있습니다.
 
 ## 만들어진 과정
 
