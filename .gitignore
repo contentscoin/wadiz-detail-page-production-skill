@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.zip
+*.log
+node_modules/
+__pycache__/
+.pytest_cache/

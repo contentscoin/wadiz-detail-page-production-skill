@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "skill": "wadiz-detail-page-production",
+  "pack_release": "wadiz-detail-page-full-fidelity",
+  "version": "1.0.0",
+  "distribution": {
+    "type": "opencrab_marketplace_or_team_listing",
+    "marketplace_url": "https://opencrab.sh/marketplace",
+    "listing_id": "REPLACE_WITH_OPENCRAB_LISTING_ID",
+    "license_scope": "REPLACE_WITH_LICENSE_SCOPE"
+  },
+  "recommended_project_name": "wadiz_detail_page_full_fidelity_project",
+  "required_package_count": "REPLACE_WITH_PUBLIC_PACKAGE_COUNT",
+  "required_pack_families": [
+    "source_reference",
+    "normalized_page_unit",
+    "section_flow",
+    "copy_pattern",
+    "visual_block",
+    "gif_motion_proof",
+    "claim_evidence",
+    "objection_resolution",
+    "offer_pricing",
+    "category_playbook",
+    "assembly_formula",
+    "production_bridge",
+    "product_fact_map",
+    "visual_ocr_qa",
+    "runtime_execution_bridge"
+  ],
+  "smoke_test_required": true,
+  "source_boundary": {
+    "raw_wadiz_html_included": false,
+    "raw_wadiz_media_included": false,
+    "crawler_output_included": false,
+    "pack_zip_included_in_repo": false,
+    "requires_authorized_or_public_source_use": true
+  }
+}
