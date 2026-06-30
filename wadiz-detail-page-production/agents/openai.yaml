@@ -1,8 +1,8 @@
 interface:
   display_name: "Wadiz Detail Page Production"
-  short_description: "Wadiz-style detail pages with OpenCrab packs."
+  short_description: "Wadiz-style detail pages using OpenCrab packs plus an ecommerce production backbone."
   brand_color: "#1F6FEB"
-  default_prompt: "Use $wadiz-detail-page-production to plan a source-bound Wadiz-style Korean ecommerce detail page."
+  default_prompt: "Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package a source-bound Wadiz-style Korean ecommerce detail page."
 
 policy:
   allow_implicit_invocation: true
