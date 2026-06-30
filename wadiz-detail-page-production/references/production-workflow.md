@@ -17,6 +17,26 @@ For any production request, return these sections unless the user explicitly ask
 
 If OpenCrab packs are not installed or smoke-tested, still use this structure, but mark evidence as `pack_not_verified` or `evidence_missing`.
 
+## Production Mode Gate
+
+Choose the output mode before producing anything. This gate prevents the skill from turning a failed pack lookup or weak asset state into low-quality final images.
+
+| Mode | Conditions | Allowed output | Forbidden output |
+|---|---|---|---|
+| `planning_only` | OpenCrab pack missing, pack smoke test failed, or evidence returns only metadata/fallback rows | fact map, evidence gaps, strategy, 12/15-cut blueprint, asset list | final images, HTML gallery, ZIP, long image, claim-final copy |
+| `blueprint_only` | pack verified but product facts are incomplete | fact map, evidence matrix, cut structure, copy draft with `confirmation_needed`, asset requirements | final images, final CTA, final offer/pricing claim |
+| `prompt_brief_only` | pack verified but asset gate is `conditional` | cut plan, copy draft, image/GIF direction, image-generation prompt briefs, shot list, required assets | final images, finished detail page, gallery, ZIP |
+| `final_production_allowed` | pack verified, product facts confirmed, and asset gate is `ready` | final copy, image generation, HTML/gallery/ZIP, QA report | unsupported claims, unverified assets, copied Wadiz media |
+
+Stop rules:
+
+- If mode is `planning_only`, say `pack_not_verified` and do not create final visual assets.
+- If marketplace search returns unrelated packs, treat that as `pack_not_verified`.
+- If mode is `blueprint_only`, say which facts block final production.
+- If mode is `prompt_brief_only`, say `asset_gate_conditional` and do not generate final images.
+- If mode is not `final_production_allowed`, the correct next deliverable is a production brief, not a mock image.
+- Never use PIL/simple shapes/wireframes as a substitute for final Wadiz-style detail-page images. If a wireframe is explicitly requested, label it `internal_wireframe`, not final output.
+
 ## Step 1. Product Intake
 
 Collect or mark missing:
@@ -28,11 +48,14 @@ Collect or mark missing:
 - top 1-5 product features
 - offer, price, option, bundle, delivery, return, caution details
 - source URL or seller-provided fact sheet
+- official homepage or official seller page for product/service fact verification
 - certifications, tests, awards, review data, performance numbers
 - approved product photos, renders, videos, or generated reference directions
 - prohibited claims or regulated expressions
 
 Write missing fields as `confirmation_needed`.
+
+For product-specific copy, verify facts against an official source URL, seller-provided document, or user-approved source. If no source is available, keep claims in `confirmation_needed` or `assumption`; do not turn them into final copy.
 
 Never invent:
 
@@ -126,6 +149,8 @@ Default production shape:
 - mobile-first Korean copy
 - 1-2 messages per cut
 - no final image generation before asset gate is ready
+- if the gate is `conditional`, create prompt briefs and asset requirements only
+- if the gate is `blocked`, stop at a rework report
 
 12-cut structure:
 
@@ -215,8 +240,18 @@ Before final image production, classify assets:
 Asset gate statuses:
 
 - `ready`: enough facts/assets for final image production
-- `conditional`: planning can continue, final image/copy needs confirmation
+- `conditional`: planning and prompt briefs can continue, but final image/copy production is not allowed
 - `blocked`: do not generate final detail-page images
+
+Minimum `ready` criteria:
+
+- official product/service facts are confirmed
+- offer, price, benefit, delivery, return, caution, or terms are confirmed where used
+- brand logo, product image, service screenshot, venue/event/photo reference, or approved generated visual direction exists for every cut that needs it
+- proof cuts have real evidence, not invented reviews or awards
+- regulated or financial/legal-like claims have explicit source support or are removed
+
+For premium service pages such as executive golf, membership, consulting, finance, or B2B services, `ready` normally requires professional-grade visual sources or user-approved generated scene direction. Without those, the mode is `prompt_brief_only`.
 
 ## Step 9. Required Plan Template
 
@@ -322,5 +357,7 @@ Before final delivery:
 - Every cut has a role, headline, subcopy, visual direction, evidence/fact, and QA note.
 - Product image prompts preserve real product details.
 - Asset gate is `ready` before final image generation.
+- If asset gate is `conditional` or `blocked`, final visual production was stopped and reported.
+- No placeholder, diagrammatic, PIL-generated, or wireframe image is presented as final output.
 - Korean text OCR/readability QA is planned or complete.
 - Final package includes requested files: cut images, optional long image, gallery HTML, ZIP, and QA report.

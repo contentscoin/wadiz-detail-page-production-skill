@@ -16,6 +16,8 @@ This skill requires an installed OpenCrab Wadiz detail-page ontology pack. The G
 6. Attach all required package IDs to that project.
 7. Run smoke tests before making a detail page.
 
+Do not accept a marketplace result only because it matched the search query. Reject false positives whose title, description, category, tags, or pack families are not explicitly about Wadiz detail-page references. For example, a generic laptop specs pack returned by a `Wadiz detail page` query is not a valid Wadiz pack.
+
 ## Required Pack Families
 
 - `source_reference`
@@ -39,6 +41,7 @@ This skill requires an installed OpenCrab Wadiz detail-page ontology pack. The G
 The install is production-ready only when all tests pass:
 
 - Project package count is nonzero and includes the expected Wadiz pack families.
+- Marketplace or installed pack identity explicitly matches Wadiz/detail-page references, not an unrelated query match.
 - Evidence retrieval returns actual Wadiz page, section, copy, visual, claim, or production rules.
 - Evidence retrieval is not limited to package snapshot metadata.
 - Evidence retrieval does not return unrelated artifacts such as office furniture, generic image asset chunks, or unrelated product categories.
@@ -51,6 +54,8 @@ Using the Wadiz detail-page project packs, return a practical cut blueprint form
 ```
 
 If the answer says only metadata is retrievable, the public pack is not ready for production.
+
+If this gate fails, the skill may still produce a planning framework, but it must not produce final images, HTML galleries, ZIP packages, or claim-final copy as if the result were pack-backed.
 
 ## Failure Policy
 
