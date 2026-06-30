@@ -35,6 +35,15 @@ claiming it is publication-ready.
 - Generated package/box visuals were concept assets, not approved real packaging.
 - Legal, policy, money, discount, and benefit wording needed final approval.
 
+## Source Attribution
+
+| Item | Source family | Source name or link | Used for | Verification status | Publication rule |
+|---|---|---|---|---|---|
+| Wadiz-style sequence | `wadiz_pattern_source` | OpenCrab Wadiz packs used in the maintainer workspace | cut order and proof rhythm | example evidence only | rerun pack smoke test in the user's workspace |
+| Product visible details | `asset_source` | user-provided Luckyball product photo | concept prompt details | reference_only | not a final product asset |
+| Luckyball pilot result | `example_source` | this sample and `luckyball-pilot-lessons.md` | concept gate behavior | example_only | not reusable product fact evidence |
+| Price, discount, benefit, policy | `not_verified` | none in this sample | claim guard | blocked | require official product source before publication |
+
 ## Correct Final Label
 
 `concept_v1_full_scene_generated_pass_with_publication_blockers`

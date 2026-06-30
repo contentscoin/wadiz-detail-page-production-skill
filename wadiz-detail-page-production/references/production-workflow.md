@@ -8,13 +8,14 @@ For any production request, return these sections unless the user explicitly ask
 
 1. Product fact map
 2. OpenCrab evidence matrix
-3. Wadiz-style page strategy
-4. 12-cut or 15-cut detail-page plan
-5. Cut-by-cut copy and visual direction
-6. Asset requirements and asset gate status
-7. Claim guard
-8. Production readiness and QA checklist
-9. Base ecommerce pipeline artifacts: exact cut count, prompt/job queue, gallery/ZIP plan, QA/regen plan
+3. Source attribution matrix
+4. Wadiz-style page strategy
+5. 12-cut or 15-cut detail-page plan
+6. Cut-by-cut copy and visual direction
+7. Asset requirements and asset gate status
+8. Claim guard
+9. Production readiness and QA checklist
+10. Base ecommerce pipeline artifacts: exact cut count, prompt/job queue, gallery/ZIP plan, QA/regen plan
 
 If OpenCrab packs are not installed or smoke-tested, still use this structure, but mark evidence as `pack_not_verified` or `evidence_missing`.
 
@@ -28,14 +29,15 @@ Run every request through this stateful sequence. Do not jump to later stages ju
 | 1 | Product fact intake | What is actually true about this product, offer, and channel? | fact map with `confirmed`, `assumption`, `confirmation_needed`, `blocked` |
 | 2 | Pack install and retrieval gate | Are Wadiz packs installed and returning useful evidence? | pack status and evidence matrix |
 | 3 | Mode gate | What output level is allowed now? | `planning_only`, `blueprint_only`, `prompt_brief_only`, or `final_production_allowed` |
-| 3.5 | Base ecommerce backbone | Has the cloned ecommerce execution pipeline been applied? | photo analysis, exact cut count, cut contract, job queue, gallery/ZIP, QA/regen plan |
-| 4 | Strategy and section route | Which Wadiz-style persuasion route fits this product? | page strategy and section sequence |
-| 5 | Cut blueprint | What does each cut do? | 12-cut or 15-cut table |
-| 6 | Copy and claim guard | Which copy can be said safely? | draft copy and claim table |
-| 7 | Asset and visual direction | What visual source or prompt is needed for each cut? | asset gate and image/GIF direction |
-| 8 | Final production | Are images, HTML, long image, and ZIP allowed? | final artifacts only if all gates pass |
-| 9 | QA and repair | What failed and what should be regenerated? | QA report and targeted regen queue |
-| 10 | Delivery and learning | What is safe to deliver or reuse? | package report and sanitized lessons only |
+| 3.5 | Source attribution | Which source supports each pattern, fact, asset, and example? | source matrix with `wadiz_pattern_source`, `product_fact_source`, `asset_source`, `example_source`, `not_verified` |
+| 4 | Base ecommerce backbone | Has the cloned ecommerce execution pipeline been applied? | photo analysis, exact cut count, cut contract, job queue, gallery/ZIP, QA/regen plan |
+| 5 | Strategy and section route | Which Wadiz-style persuasion route fits this product? | page strategy and section sequence |
+| 6 | Cut blueprint | What does each cut do? | 12-cut or 15-cut table |
+| 7 | Copy and claim guard | Which copy can be said safely? | draft copy and claim table |
+| 8 | Asset and visual direction | What visual source or prompt is needed for each cut? | asset gate and image/GIF direction |
+| 9 | Final production | Are images, HTML, long image, and ZIP allowed? | final artifacts only if all gates pass |
+| 10 | QA and repair | What failed and what should be regenerated? | QA report and targeted regen queue |
+| 11 | Delivery and learning | What is safe to deliver or reuse? | package report and sanitized lessons only |
 
 ## Status Vocabulary
 
@@ -148,6 +150,7 @@ Act like a production director, not a generic copywriter.
 - Keep Wadiz pattern evidence separate from product-specific facts.
 - Use the product's official source for price, benefits, conditions, terms, claims, and contacts.
 - Use OpenCrab only to decide persuasion structure, copy pattern, visual rhythm, GIF/proof placement, objection handling, and QA rules.
+- Create source attribution for every production-facing artifact. Pattern sources, product fact sources, asset sources, examples, and unverified assumptions must be separately labeled.
 - Mark every invented-looking claim as `confirmation_needed` or `blocked`.
 - When images are not allowed, create visual direction and prompt briefs instead of mock images.
 - When concept images are allowed, generate or build the concept package and run practical QA, but keep publication blocked.
@@ -243,7 +246,35 @@ Evidence matrix format:
 | visual_ocr_qa |  |  |  |
 ```
 
-## Step 3. Fact Map
+## Step 3. Source Attribution Matrix
+
+Create this before final copy, prompt generation, visual production, QA, or delivery packaging:
+
+```markdown
+| Item | Source family | Source name or link | Used for | Verification status | Publication rule |
+|---|---|---|---|---|---|
+| section order | wadiz_pattern_source |  | page route | verified / weak / missing | may guide structure only |
+| hook/copy pattern | wadiz_pattern_source |  | headline style | verified / weak / missing | do not copy original text |
+| product fact | product_fact_source |  | claim/copy | confirmed / confirmation_needed | publish only if confirmed |
+| price/offer/terms | product_fact_source |  | CTA/offer cut | confirmed / confirmation_needed | block final CTA if missing |
+| product image/logo | asset_source |  | prompt/final asset | reference_only / approved_final | label concept if not final-approved |
+| pilot lesson | example_source |  | workflow/QA | example_only | not a fact source |
+| assumption | not_verified | none | planning placeholder | blocked | remove or soften before publication |
+```
+
+Source family meanings:
+
+| Source family | Meaning |
+|---|---|
+| `wadiz_pattern_source` | Wadiz/OpenCrab pack evidence for structure, section flow, copy rhythm, proof placement, visual/GIF rules, and QA rules |
+| `product_fact_source` | Official URL, seller document, user-approved material, attached file, or explicit user confirmation for current product facts |
+| `asset_source` | Product photo, logo, render, screenshot, video, brand asset, or approved generated visual direction |
+| `example_source` | Pilot/example lesson, such as Luckyball concept-generation workflow |
+| `not_verified` | Missing, inferred, assumed, unsupported, or publication-blocking item |
+
+If the source attribution matrix cannot be filled, do not call the output final or publication-ready.
+
+## Step 4. Fact Map
 
 Create this before final copy:
 
@@ -271,7 +302,7 @@ Fact statuses:
 | `confirmation_needed` | missing or needs seller/source confirmation |
 | `blocked` | must not appear in final detail page |
 
-## Step 4. Default Detail-Page Structure
+## Step 5. Default Detail-Page Structure
 
 Default production shape:
 
@@ -308,7 +339,7 @@ For 15 cuts, split:
 - proof into detail/use/comparison cuts
 - FAQ into trust/caution/delivery cuts
 
-## Step 5. Copy Rules
+## Step 6. Copy Rules
 
 Good Wadiz-style copy:
 
@@ -330,7 +361,7 @@ Avoid:
 - fabricated certifications, awards, reviews, rankings, or performance numbers
 - invented free shipping, same-day shipping, limited quantity, or discount claims
 
-## Step 6. Visual And GIF Rules
+## Step 7. Visual And GIF Rules
 
 Visual rules:
 
@@ -347,7 +378,7 @@ GIF/motion rules:
 - Preferred placement is right after problem framing or right after the first feature explanation.
 - If no real motion asset exists, produce a motion storyboard or image-generation direction instead of pretending a GIF exists.
 
-## Step 7. Product Image Policy
+## Step 8. Product Image Policy
 
 When the user provides product photos:
 
@@ -359,7 +390,7 @@ When the user provides product photos:
 - For concept generation, full-scene generation from product-detail analysis is preferred over simple product cutout compositing.
 - If exact logo fidelity is required, use an official logo/brand-layer route and document it separately from image-model generation.
 
-## Step 8. Asset Gate
+## Step 9. Asset Gate
 
 Before final image production, classify assets:
 
@@ -397,7 +428,7 @@ Concept-generation minimum criteria:
 
 For premium service pages such as executive golf, membership, consulting, finance, or B2B services, `ready` normally requires professional-grade visual sources or user-approved generated scene direction. Without those, the mode is `prompt_brief_only`.
 
-## Step 9. Required Plan Template
+## Step 10. Required Plan Template
 
 Use this template for production planning:
 
@@ -432,7 +463,13 @@ Use this template for production planning:
 | production_bridge |  |  |  |
 | visual_ocr_qa |  |  |  |
 
-## 3. Page Strategy
+## 3. Source Attribution Matrix
+
+| Item | Source family | Source name or link | Used for | Verification status | Publication rule |
+|---|---|---|---|---|---|
+|  | wadiz_pattern_source / product_fact_source / asset_source / example_source / not_verified |  |  |  |  |
+
+## 4. Page Strategy
 
 - first hook:
 - problem framing:
@@ -442,7 +479,7 @@ Use this template for production planning:
 - objection removal:
 - final CTA:
 
-## 4. Cut Plan
+## 5. Cut Plan
 
 | Cut | Role | Headline | Subcopy | Visual/GIF direction | Evidence/fact | QA |
 |---:|---|---|---|---|---|---|
@@ -459,29 +496,30 @@ Use this template for production planning:
 | 11 | Delivery/caution |  |  |  |  |  |
 | 12 | Final CTA |  |  |  |  |  |
 
-## 5. Image Generation Directions
+## 6. Image Generation Directions
 
 | Cut | Prompt direction | Product detail to preserve | Text-safe area | Risk |
 |---:|---|---|---|---|
 | 01 |  |  |  |  |
 
-## 6. Asset Requirements
+## 7. Asset Requirements
 
 - ready:
 - conditional:
 - missing:
 - blocked until:
 
-## 7. Claim Guard
+## 8. Claim Guard
 
 | Claim | Status | Evidence | Action |
 |---|---|---|---|
 |  | confirmed / assumption / blocked |  |  |
 
-## 8. Production Readiness
+## 9. Production Readiness
 
 - pack smoke test:
 - fact map:
+- source attribution:
 - asset gate:
 - concept generation status:
 - production asset status:
@@ -491,11 +529,12 @@ Use this template for production planning:
 - package output:
 ```
 
-## Step 10. Final QA Checklist
+## Step 11. Final QA Checklist
 
 Before final delivery:
 
 - OpenCrab evidence matrix is filled or explicitly marked `pack_not_verified`.
+- Source attribution matrix separates Wadiz pattern evidence, product facts, asset sources, examples, and unverified assumptions.
 - All major pack families were considered.
 - Product facts are separated from assumptions.
 - Unsupported claims were removed or softened.
@@ -513,7 +552,7 @@ Before final delivery:
 - Money, discount, policy, legal, warranty, delivery, and benefit copy is source-locked before publication.
 - Final package includes requested files: cut images, optional long image, gallery HTML, ZIP, and QA report.
 
-## Step 11. Pilot Learning Rule
+## Step 12. Pilot Learning Rule
 
 When a user provides a weak but informative product photo and asks not to use cutout compositing, use the Luckyball pilot lesson:
 

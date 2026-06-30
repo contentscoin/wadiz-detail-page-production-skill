@@ -19,7 +19,7 @@ Codex 로컬 스킬 폴더에 복사합니다.
 
 ```powershell
 # 저장소 루트에서 실행
-Copy-Item -Recurse ".\skills\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
+Copy-Item -Recurse ".\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
 ```
 
 설치 후 다음처럼 호출합니다.
@@ -84,6 +84,20 @@ FMG Luckyball 작업에서는 상품 사진을 그대로 누끼 합성하는 방
 - 와디즈 원본 페이지의 이미지, GIF, 문구를 복제하는 목적이 아닙니다.
 - OpenCrab 팩은 구조, 리듬, 소구점, 증거 배치, QA 규칙을 참고하는 용도이며, 특정 상품의 가격/혜택/약관/인증 사실을 대신 증명하지 않습니다.
 - 상품별 사실은 공식 URL, 판매자 제공 문서, 사용자 승인 자료로 별도 확인해야 합니다.
+
+## 출처 표기 규칙
+
+상세페이지 기획서, 컷 블루프린트, 이미지 프롬프트, QA 리포트, 패키지 manifest에는 다음 출처 범주를 분리해 적습니다.
+
+| 출처 범주 | 의미 | 사용 한계 |
+|---|---|---|
+| `wadiz_pattern_source` | OpenCrab 와디즈팩에서 조회한 섹션 흐름, 카피/비주얼 패턴, GIF/증거 배치, QA 규칙 | 상품별 사실을 증명하지 않음 |
+| `product_fact_source` | 공식 URL, 판매자 자료, 사용자 승인 문서, 첨부 파일, 명시적 확인 | 와디즈 스타일 패턴을 대신하지 않음 |
+| `asset_source` | 제품 사진, 로고, 렌더, 스크린샷, 영상, 승인된 생성 방향 | 사실/성능/혜택 주장을 대신 증명하지 않음 |
+| `example_source` | 럭키볼 파일럿 같은 운영 사례와 QA 교훈 | 다른 상품의 사실 출처로 쓰지 않음 |
+| `not_verified` | 확인되지 않은 추정, 누락 자료, unsupported claim | 최종 문구/판매용 이미지에 사용 금지 |
+
+출처 표가 비어 있거나 상품 사실 출처가 부족하면 결과물은 `planning_only`, `blueprint_only`, `prompt_brief_only`, 또는 `concept/publication_blocked`로 표시해야 합니다.
 
 ## 포함 파일
 

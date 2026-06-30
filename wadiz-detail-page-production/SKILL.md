@@ -29,6 +29,9 @@ The cloned base pipeline lives in `references/base-ecommerce-clone/`; the clean 
 - Use the user's OpenCrab project created from installed public/team/company packs as the primary source.
 - Do not use offline/local files as the primary production source. Local files are runbooks, QA evidence, backups, and rebuild sources.
 - If a maintainer provides private owner IDs separately, use them only in that private workspace and never require them for public users.
+- Always distinguish five source classes in outputs: `wadiz_pattern_source`, `product_fact_source`, `asset_source`, `example_source`, and `not_verified`.
+- Wadiz/OpenCrab evidence can justify structure, rhythm, proof placement, and copy pattern. It cannot verify the current product's price, benefit, policy, certification, legal condition, delivery promise, review, or ranking.
+- Product-specific facts must come from official URLs, seller-provided documents, user-approved materials, attached assets, or explicitly confirmed user statements.
 
 ## Workflow
 
@@ -39,12 +42,13 @@ The cloned base pipeline lives in `references/base-ecommerce-clone/`; the clean 
 5. Fact map: separate verified facts, inferred benefits, and unsupported claims. Unsupported claims must be downgraded, removed, or marked evidence-pending.
 6. OpenCrab retrieval: query the active project for relevant category playbooks, section flow, copy patterns, visual/GIF patterns, claim-evidence rules, objection-resolution patterns, and production bridge rules.
 7. Evidence matrix: map each required pack family to the production decision it changed. If evidence is weak, say `evidence_missing` instead of filling the gap with generic ecommerce advice.
-8. Base ecommerce backbone: apply the cloned ecommerce pipeline for photo analysis, exact cut count, cut-level copy, prompt/job files, parallel generation design, gallery/ZIP packaging, and QA/regen artifacts.
-9. Cut blueprint: produce the required output template: product fact map, evidence matrix, page strategy, 12-cut or 15-cut plan, asset requirements, claim guard, and production readiness.
-10. Asset gate: decide which existing assets can be used as factual reference, which must be regenerated, and which must not be reused. For user-provided product photos, analyze product details and generate new scene prompts unless the user explicitly asks for direct compositing.
-11. Production: build concept or final detail-page files, images, long image, gallery HTML, ZIP/package, or implementation artifacts only when the mode gate allows that exact artifact class.
-12. QA: run practical verification before calling the work done. Check factual consistency, claim risk, Korean copy tone, mobile readability, text overlap, image fit, OCR legibility when possible, file sizes, delivery format, asset truth, logo fidelity, and publication blockers.
-13. Report: summarize what was produced, which OpenCrab project/packs were used, what passed QA, what remains evidence-pending, what was blocked, where the files are, and whether the result is `concept`, `publication_review_required`, or `publication_ready`.
+8. Source attribution: create a source matrix that explains which decisions came from Wadiz/OpenCrab patterns, which facts came from product sources, which assets were used or referenced, which examples informed the process, and which items remain unverified.
+9. Base ecommerce backbone: apply the cloned ecommerce pipeline for photo analysis, exact cut count, cut-level copy, prompt/job files, parallel generation design, gallery/ZIP packaging, and QA/regen artifacts.
+10. Cut blueprint: produce the required output template: product fact map, evidence matrix, source attribution matrix, page strategy, 12-cut or 15-cut plan, asset requirements, claim guard, and production readiness.
+11. Asset gate: decide which existing assets can be used as factual reference, which must be regenerated, and which must not be reused. For user-provided product photos, analyze product details and generate new scene prompts unless the user explicitly asks for direct compositing.
+12. Production: build concept or final detail-page files, images, long image, gallery HTML, ZIP/package, or implementation artifacts only when the mode gate allows that exact artifact class.
+13. QA: run practical verification before calling the work done. Check factual consistency, claim risk, source attribution, Korean copy tone, mobile readability, text overlap, image fit, OCR legibility when possible, file sizes, delivery format, asset truth, logo fidelity, and publication blockers.
+14. Report: summarize what was produced, which OpenCrab project/packs were used, what product/asset sources were used, what passed QA, what remains evidence-pending, what was blocked, where the files are, and whether the result is `concept`, `publication_review_required`, or `publication_ready`.
 
 ## Operating Direction
 
@@ -75,6 +79,7 @@ The main quality decision is evidence usefulness, not package count. A project w
 - If asset gate is `conditional` or `blocked`, do not create final marketplace images. Concept-only images are allowed only when the user explicitly asks for visual generation, product-detail references are sufficient, and every artifact is labeled concept/publication-blocked.
 - Never present PIL, diagrammatic, placeholder, wireframe, or low-fidelity mock images as final Wadiz-style detail-page output.
 - Never let a concept draft, normalized image set, gallery, or ZIP imply publication readiness unless OCR/text match, logo fidelity, asset truth, legal/policy copy, and claim alignment have passed or been manually approved.
+- Never publish or hand off a production brief, cut blueprint, prompt package, QA report, or final package without explicit source attribution for pattern evidence, product facts, and assets.
 
 ## References
 

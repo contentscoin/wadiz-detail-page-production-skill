@@ -20,6 +20,18 @@
 | 금지 claim | 경기력 향상 보장 | 사용 금지 |
 | 금지 claim | 국내 최초 / 업계 1위 | 증빙 없으면 사용 금지 |
 
+## Source Attribution Matrix
+
+| 항목 | 출처 범주 | 출처명/링크 | 사용 범위 | 검증 상태 | 게시 규칙 |
+|---|---|---|---|---|---|
+| 12컷 흐름 | `wadiz_pattern_source` | OpenCrab Wadiz section-flow/category-playbook evidence | 전체 컷 순서 | pack smoke test 필요 | 구조 참고만 가능 |
+| 카피 밀도/FAQ 배치 | `wadiz_pattern_source` | OpenCrab copy/objection-resolution evidence | 카피 길이, FAQ 위치 | pack smoke test 필요 | 원문 복사 금지 |
+| 정기배송/마킹 기능 | `product_fact_source` | 판매자 fact sheet | 기능 설명 | 확인 필요 | 확인 전 확정 표현 금지 |
+| 가격/옵션/배송/환불 | `product_fact_source` | 판매자 가격표/정책 문서 | 오퍼, CTA, FAQ | 확인 필요 | 미확정 시 final CTA 차단 |
+| 제품 사진 | `asset_source` | 사용자 제공 상품 사진 | 제품 디테일 분석/프롬프트 | reference_only | 최종 이미지 사용권 별도 확인 |
+| 럭키볼 파일럿 | `example_source` | `luckyball-pilot-lessons.md` | 전체 장면 생성 방식 | example_only | 상품 사실로 사용 금지 |
+| 경기력 향상/1위 claim | `not_verified` | 없음 | claim guard | blocked | 제거 또는 증빙 전까지 금지 |
+
 ## 12컷 구조 예시
 
 | 컷 | 역할 | 카피 방향 | 이미지/GIF 방향 | QA 포인트 |
