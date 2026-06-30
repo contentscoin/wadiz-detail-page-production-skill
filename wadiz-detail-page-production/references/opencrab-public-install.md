@@ -2,9 +2,11 @@
 
 Use this reference when a user wants to run Wadiz detail-page production with their own OpenCrab account.
 
+Canonical OpenCrab platform source: https://opencrab.sh
+
 ## Requirement
 
-This skill requires an installed OpenCrab Wadiz detail-page ontology pack. The GitHub repository contains only the Codex skill and setup documents. It does not contain raw crawl data, original media, or ontology pack ZIP files.
+This skill requires an installed OpenCrab Wadiz detail-page ontology pack in the user's OpenCrab workspace at https://opencrab.sh. The GitHub repository contains only the Codex skill and setup documents. It does not contain raw crawl data, original media, or ontology pack ZIP files.
 
 ## Install Procedure
 

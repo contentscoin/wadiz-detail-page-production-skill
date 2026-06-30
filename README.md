@@ -8,8 +8,8 @@
 
 | 레이어 | 역할 |
 |---|---|
-| `ecommerce-detail-page` 백본 | 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
-| OpenCrab 와디즈 온톨로지팩 | 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
+| `ecommerce-detail-page` 백본 | [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
+| OpenCrab 와디즈 온톨로지팩 | [opencrab.sh](https://opencrab.sh) 기반 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
 | `detail-page-reference-analyzer` | 기존 상세페이지/URL/레퍼런스 역기획과 비공개 참고 분석 |
 | `wadiz-detail-page-production` | 위 레이어를 조립하고 pack/fact/asset/concept/publication/QA 게이트를 관리 |
 
@@ -38,7 +38,7 @@ Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package
 
 이 저장소만 설치한다고 완전한 pack-backed 제작이 되는 것은 아닙니다.
 
-OpenCrab 기반 제작을 하려면 사용자의 OpenCrab 워크스페이스에 와디즈 상세페이지 온톨로지팩이 설치되어 있고, 해당 팩들이 프로젝트에 연결되어 있어야 합니다. 팩이 없거나 retrieval smoke test가 실패하면 이 스킬은 기획 프레임워크 또는 콘셉트 제작 프로토콜로만 작동합니다.
+[OpenCrab](https://opencrab.sh) 기반 제작을 하려면 사용자의 OpenCrab 워크스페이스에 와디즈 상세페이지 온톨로지팩이 설치되어 있고, 해당 팩들이 프로젝트에 연결되어 있어야 합니다. 팩이 없거나 retrieval smoke test가 실패하면 이 스킬은 기획 프레임워크 또는 콘셉트 제작 프로토콜로만 작동합니다.
 
 ## 상태 게이트
 
@@ -70,7 +70,7 @@ OpenCrab 기반 제작을 하려면 사용자의 OpenCrab 워크스페이스에 
 - `wadiz-detail-page-production/README.md`: 스킬 폴더 단위 설치/사용 안내
 - `wadiz-detail-page-production/references/production-workflow.md`: 실제 제작 워크플로우
 - `wadiz-detail-page-production/references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
-- `wadiz-detail-page-production/references/base-ecommerce-clone/`: 기존 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
+- `wadiz-detail-page-production/references/base-ecommerce-clone/`: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
 - `wadiz-detail-page-production/references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
 - `docs/creation-process.md`: 제작 과정과 설계 이유
 - `examples/`: 샘플 입력/출력 문서
@@ -85,8 +85,8 @@ OpenCrab 기반 제작을 하려면 사용자의 OpenCrab 워크스페이스에 
 | 출처 | 사용 범위 | 비고 |
 |---|---|---|
 | 와디즈 공개 상세페이지 크롤링 데이터 | 섹션 흐름, 후킹 방식, 카피 패턴, GIF/증거 배치, 구매불안 해소 구조 분석 | 원문, 이미지, GIF, 영상은 이 저장소에 포함하지 않습니다. |
-| OpenCrab 와디즈 온톨로지팩 | pack-backed 제작 시 검색 가능한 레퍼런스 근거 | 사용자의 OpenCrab 워크스페이스에 별도로 설치되어야 합니다. |
-| 기존 `ecommerce-detail-page` 스킬 | 상품 인테이크, 컷 구조, 이미지 생성 큐, HTML/ZIP, QA 실행 백본 | 이 저장소에는 와디즈 프로덕션에 필요한 핵심 레퍼런스/스크립트 복사본만 포함합니다. |
+| [OpenCrab](https://opencrab.sh) | pack-backed 제작 시 검색 가능한 와디즈 온톨로지팩과 프로젝트/워크플로우 실행 기반 | 사용자의 OpenCrab 워크스페이스에 별도로 설치되어야 합니다. |
+| [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) | 상품 인테이크, 컷 구조, 이미지 생성 큐, HTML/ZIP, QA 실행 백본 | 이 저장소에는 와디즈 프로덕션에 필요한 핵심 레퍼런스/스크립트 복사본만 포함합니다. |
 | FMG Luckyball 파일럿 | 제품 사진을 참조로 분석하고 전체 장면을 생성하는 concept workflow 검증 | 특정 상품 전용 규칙이 아니라 QA 사례와 운영 교훈입니다. |
 | 사용자 제공 공식 자료 | 상품별 가격, 혜택, 조건, 약관, 배송, 인증, 로고, 이미지 사실 검증 | 최종 판매용 문구는 이 자료로 별도 확인해야 합니다. |
 

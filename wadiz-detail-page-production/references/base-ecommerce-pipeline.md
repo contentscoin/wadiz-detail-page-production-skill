@@ -1,8 +1,11 @@
 # Base Ecommerce Pipeline
 
 This file is the self-contained execution backbone cloned from the older
-`ecommerce-detail-page` skill. The Wadiz production skill extends this pipeline;
-it must not replace it with OpenCrab lookup alone.
+`ecommerce-detail-page` skill published at
+https://github.com/aisyncclub/detail_page_codex_skill. The Wadiz production
+skill extends this pipeline; it must not replace it with OpenCrab lookup alone.
+
+Canonical OpenCrab platform source: https://opencrab.sh
 
 ## Role Split
 
@@ -11,7 +14,7 @@ Use these roles when the Wadiz skill is active:
 | Layer | Responsibility |
 |---|---|
 | Base ecommerce pipeline | product intake, photo analysis, category/style choice, exact cut count, cut plan, approved copy, image prompt/job queue, parallel generation, gallery/ZIP, QA, regen queue |
-| OpenCrab Wadiz ontology packs | choose Wadiz-style section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, claim-evidence rules, visual/OCR QA rules |
+| OpenCrab Wadiz ontology packs | choose Wadiz-style section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, claim-evidence rules, visual/OCR QA rules from the user's OpenCrab workspace at https://opencrab.sh |
 | Detail page reference analyzer | privately analyze external reference/detail pages, collect reference images, reverse-plan reusable patterns |
 | Wadiz production skill | orchestrate the above, enforce gates, keep product facts separate from reference patterns, and report concept vs publication readiness honestly |
 

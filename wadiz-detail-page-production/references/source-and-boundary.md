@@ -15,13 +15,24 @@ This skill is based on structural analysis of Wadiz-style Korean ecommerce detai
 - claim-evidence risk signals
 - visual/OCR QA requirements
 
+## Canonical External Sources
+
+Use these public sources when describing this skill, documenting provenance, or preparing marketplace/README copy:
+
+| Source | URL | Role |
+|---|---|---|
+| AI Sync Club detail-page Codex skill | https://github.com/aisyncclub/detail_page_codex_skill | Base ecommerce/detail-page production pipeline, cut planning, image job queue, gallery/ZIP, and QA backbone |
+| OpenCrab | https://opencrab.sh | Ontology pack platform and runtime source for Wadiz pack-backed retrieval |
+
+Do not replace these with private maintainer paths, private OpenCrab project IDs, local backup folders, or MCP URLs in public documentation.
+
 ## Source Families
 
 Use these source families consistently in README files, production briefs, cut blueprints, prompt briefs, QA reports, and delivery manifests.
 
 | Source family | What it can support | What it cannot support |
 |---|---|---|
-| `wadiz_pattern_source` | Wadiz-style section order, hook pattern, proof/GIF placement, copy density, visual rhythm, objection handling, and QA rules retrieved from OpenCrab Wadiz ontology packs | The current product's price, promise, certificate, review, ranking, delivery term, warranty, legal condition, or factual performance |
+| `wadiz_pattern_source` | Wadiz-style section order, hook pattern, proof/GIF placement, copy density, visual rhythm, objection handling, and QA rules retrieved from OpenCrab Wadiz ontology packs at https://opencrab.sh | The current product's price, promise, certificate, review, ranking, delivery term, warranty, legal condition, or factual performance |
 | `product_fact_source` | Product/service facts confirmed by an official URL, seller document, attached file, product photo, or explicit user confirmation | General Wadiz persuasion rules unless also supported by pack evidence |
 | `asset_source` | Which product photos, logos, renders, screenshots, videos, or generated directions were used as factual reference or final visual assets | Claims about performance, benefits, price, legality, or certification unless the asset itself proves them |
 | `example_source` | Operational lessons from pilots such as FMG Luckyball, including concept-only generation, full-scene prompt strategy, and QA workflow | Reusable product facts or claims for unrelated products |

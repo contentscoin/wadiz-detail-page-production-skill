@@ -266,10 +266,10 @@ Source family meanings:
 
 | Source family | Meaning |
 |---|---|
-| `wadiz_pattern_source` | Wadiz/OpenCrab pack evidence for structure, section flow, copy rhythm, proof placement, visual/GIF rules, and QA rules |
+| `wadiz_pattern_source` | Wadiz/OpenCrab pack evidence from https://opencrab.sh for structure, section flow, copy rhythm, proof placement, visual/GIF rules, and QA rules |
 | `product_fact_source` | Official URL, seller document, user-approved material, attached file, or explicit user confirmation for current product facts |
 | `asset_source` | Product photo, logo, render, screenshot, video, brand asset, or approved generated visual direction |
-| `example_source` | Pilot/example lesson, such as Luckyball concept-generation workflow |
+| `example_source` | Pilot/example lesson, such as Luckyball concept-generation workflow, plus the base detail-page production source https://github.com/aisyncclub/detail_page_codex_skill when referencing the inherited execution backbone |
 | `not_verified` | Missing, inferred, assumed, unsupported, or publication-blocking item |
 
 If the source attribution matrix cannot be filled, do not call the output final or publication-ready.
@@ -467,7 +467,9 @@ Use this template for production planning:
 
 | Item | Source family | Source name or link | Used for | Verification status | Publication rule |
 |---|---|---|---|---|---|
-|  | wadiz_pattern_source / product_fact_source / asset_source / example_source / not_verified |  |  |  |  |
+| Wadiz pack retrieval | wadiz_pattern_source | https://opencrab.sh | section flow, proof placement, copy rhythm | verified / weak / missing | may guide structure only |
+| Base detail-page pipeline | example_source | https://github.com/aisyncclub/detail_page_codex_skill | cut pipeline, image jobs, gallery/ZIP, QA backbone | verified | not a product fact source |
+| Product facts/assets | product_fact_source / asset_source / not_verified | official URL, seller document, user file, or none | claims, offer, visuals | confirmed / confirmation_needed / blocked | publish only when confirmed |
 
 ## 4. Page Strategy
 

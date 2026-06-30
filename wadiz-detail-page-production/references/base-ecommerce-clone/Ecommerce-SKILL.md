@@ -5,6 +5,12 @@ description: Use when the user wants to make, plan, improve, or generate an ecom
 
 # Ecommerce Detail Page
 
+Upstream source for this cloned execution backbone:
+https://github.com/aisyncclub/detail_page_codex_skill
+
+OpenCrab platform source for Wadiz pack-backed retrieval:
+https://opencrab.sh
+
 ## Overview
 
 Use this skill to turn product information into an image-first ecommerce detail page plan. The output is not a long article; it is a production-ready cut plan for designers or image-generation tools.

@@ -5,6 +5,9 @@
 This public skill must not require a maintainer's private OpenCrab workspace,
 project ID, workflow ID, package ID, MCP URL, or token.
 
+Canonical OpenCrab platform source: https://opencrab.sh
+Canonical base detail-page skill source: https://github.com/aisyncclub/detail_page_codex_skill
+
 At runtime, create or reuse the user's own OpenCrab project:
 
 - Recommended project name: `wadiz_detail_page_full_fidelity_project`
@@ -42,7 +45,7 @@ Pack-backed production must keep Wadiz pattern evidence separate from product-sp
 
 | Source family | Primary use |
 |---|---|
-| `wadiz_pattern_source` | OpenCrab Wadiz pack evidence for section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, visual rhythm, and QA rules |
+| `wadiz_pattern_source` | OpenCrab Wadiz pack evidence from https://opencrab.sh for section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, visual rhythm, and QA rules |
 | `product_fact_source` | Official product/service URLs, seller documents, user-approved materials, attached files, or explicit user confirmation for facts, claims, price, options, delivery, terms, and policies |
 | `asset_source` | Product photos, logos, brand assets, screenshots, videos, renders, approved generated directions, and final visual asset approvals |
 | `example_source` | Lessons from pilot runs such as Luckyball, used only to guide workflow and QA behavior |

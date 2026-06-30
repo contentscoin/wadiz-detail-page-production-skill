@@ -19,7 +19,7 @@
 
 ## 2. 온톨로지팩 역할
 
-OpenCrab 와디즈 온톨로지팩은 “원본 페이지 저장소”가 아니라 제작 판단을 돕는 레퍼런스 계층입니다.
+[OpenCrab](https://opencrab.sh) 와디즈 온톨로지팩은 “원본 페이지 저장소”가 아니라 제작 판단을 돕는 레퍼런스 계층입니다.
 
 필수 pack family는 다음과 같습니다.
 
@@ -43,9 +43,14 @@ OpenCrab 와디즈 온톨로지팩은 “원본 페이지 저장소”가 아니
 
 이 스킬은 원본 콘텐츠를 재배포하지 않고, 제작 판단에 필요한 출처 범주만 명시합니다.
 
+기준 외부 출처는 다음 두 곳입니다.
+
+- Base detail-page skill: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill)
+- OpenCrab platform: [opencrab.sh](https://opencrab.sh)
+
 | 출처 범주 | 의미 | 사용 가능 범위 |
 |---|---|---|
-| `wadiz_pattern_source` | 와디즈 공개 상세페이지 크롤링 데이터를 OpenCrab 온톨로지팩으로 분석한 패턴 | 섹션 순서, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, QA 규칙 |
+| `wadiz_pattern_source` | 와디즈 공개 상세페이지 크롤링 데이터를 [OpenCrab](https://opencrab.sh) 온톨로지팩으로 분석한 패턴 | 섹션 순서, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, QA 규칙 |
 | `product_fact_source` | 공식 URL, 판매자 문서, 사용자 승인 자료, 첨부 파일, 명시적 사용자 확인 | 상품명, 가격, 혜택, 약관, 인증, 배송, 보증, 연락처, 정책 문구 |
 | `asset_source` | 제품 사진, 로고, 렌더, 스크린샷, 영상, 브랜드 에셋, 승인된 생성 방향 | 이미지 프롬프트, 콘셉트 이미지, 최종 자산 승인 여부 |
 | `example_source` | FMG Luckyball 같은 파일럿 산출물과 QA 교훈 | 운영 방식, 게이트, 실패 방지 규칙 |
@@ -57,7 +62,7 @@ OpenCrab 와디즈 온톨로지팩은 “원본 페이지 저장소”가 아니
 
 와디즈팩은 구조와 판단을 제공하지만, 실제 상세페이지 제작 파이프라인 전체를 대체하지 않습니다.
 
-그래서 이 스킬은 기존 `ecommerce-detail-page` 파이프라인을 백본으로 포함합니다.
+그래서 이 스킬은 [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill)의 `ecommerce-detail-page` 계열 파이프라인을 백본으로 포함합니다.
 
 - 상품 인테이크
 - 사진 분석

@@ -24,8 +24,9 @@
 
 | 항목 | 출처 범주 | 출처명/링크 | 사용 범위 | 검증 상태 | 게시 규칙 |
 |---|---|---|---|---|---|
-| 12컷 흐름 | `wadiz_pattern_source` | OpenCrab Wadiz section-flow/category-playbook evidence | 전체 컷 순서 | pack smoke test 필요 | 구조 참고만 가능 |
-| 카피 밀도/FAQ 배치 | `wadiz_pattern_source` | OpenCrab copy/objection-resolution evidence | 카피 길이, FAQ 위치 | pack smoke test 필요 | 원문 복사 금지 |
+| 12컷 흐름 | `wadiz_pattern_source` | https://opencrab.sh OpenCrab Wadiz section-flow/category-playbook evidence | 전체 컷 순서 | pack smoke test 필요 | 구조 참고만 가능 |
+| 카피 밀도/FAQ 배치 | `wadiz_pattern_source` | https://opencrab.sh OpenCrab copy/objection-resolution evidence | 카피 길이, FAQ 위치 | pack smoke test 필요 | 원문 복사 금지 |
+| 제작 백본 | `example_source` | https://github.com/aisyncclub/detail_page_codex_skill | 컷 구조, 이미지 job, HTML/ZIP, QA 흐름 | 확인됨 | 상품 사실로 사용 금지 |
 | 정기배송/마킹 기능 | `product_fact_source` | 판매자 fact sheet | 기능 설명 | 확인 필요 | 확인 전 확정 표현 금지 |
 | 가격/옵션/배송/환불 | `product_fact_source` | 판매자 가격표/정책 문서 | 오퍼, CTA, FAQ | 확인 필요 | 미확정 시 final CTA 차단 |
 | 제품 사진 | `asset_source` | 사용자 제공 상품 사진 | 제품 디테일 분석/프롬프트 | reference_only | 최종 이미지 사용권 별도 확인 |

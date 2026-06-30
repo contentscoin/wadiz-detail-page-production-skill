@@ -13,10 +13,12 @@ This skill does not train a model or copy source Wadiz pages. It retrieves and a
 
 ## Relationship To The Base Ecommerce Skill
 
-This skill includes the older `ecommerce-detail-page` pipeline as its execution backbone. The Wadiz ontology packs do not replace the detail-page production pipeline; they guide and constrain it.
+This skill includes the `ecommerce-detail-page` pipeline from `aisyncclub/detail_page_codex_skill` as its execution backbone. The Wadiz ontology packs do not replace the detail-page production pipeline; they guide and constrain it.
+
+Canonical base skill source: https://github.com/aisyncclub/detail_page_codex_skill
 
 - Use the base ecommerce pipeline for intake, product-photo analysis, category/style choice, exact cut count, cut-by-cut copy, image prompt/job queue, parallel cut generation, gallery/ZIP packaging, OCR/text QA, and regeneration.
-- Use OpenCrab Wadiz packs for Wadiz-specific section order, hook type, copy density, proof/GIF placement, objection handling, offer structure, visual rhythm, and claim-evidence rules.
+- Use OpenCrab Wadiz packs from the user's OpenCrab workspace for Wadiz-specific section order, hook type, copy density, proof/GIF placement, objection handling, offer structure, visual rhythm, and claim-evidence rules.
 - Use `detail-page-reference-analyzer` when the task is to inspect an existing detail page or private reference URL before creating a reusable production pattern.
 - Use this Wadiz skill as the orchestrator that combines those layers and enforces pack, fact, asset, concept, publication, and QA gates.
 
@@ -24,6 +26,8 @@ The cloned base pipeline lives in `references/base-ecommerce-clone/`; the clean 
 
 ## Source Of Truth
 
+- Canonical base detail-page skill source: https://github.com/aisyncclub/detail_page_codex_skill
+- Canonical OpenCrab platform source: https://opencrab.sh
 - Public mode: do not assume any private owner project, private package ID, local path, MCP URL, or token is available.
 - Before pack-backed production, read `references/opencrab-public-install.md` and verify that the user has installed the required Wadiz ontology pack in OpenCrab.
 - Use the user's OpenCrab project created from installed public/team/company packs as the primary source.
