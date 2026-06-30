@@ -13,6 +13,8 @@
 - Codex skill 본문: `wadiz-detail-page-production/SKILL.md`
 - OpenCrab 팩 설치 및 프로젝트 등록 게이트
 - 팩 manifest 예시
+- 제작 과정 문서
+- 샘플 상품 brief와 샘플 산출물
 - smoke test 기준
 - 출처와 사용 경계 문서
 
@@ -82,6 +84,28 @@ $wadiz-detail-page-production 을 사용해서 이 상품의 와디즈 스타일
 - `runtime_execution_bridge`
 
 자세한 절차는 [OpenCrab 설치 게이트](wadiz-detail-page-production/references/opencrab-public-install.md)를 참고하세요.
+
+## 만들어진 과정
+
+이 skill은 다음 순서로 만들어졌습니다.
+
+1. 와디즈 상세페이지의 설득 구조를 원본 복제가 아닌 제작 패턴으로 분리
+2. 섹션 흐름, 카피 패턴, 시각/GIF 사용, claim-evidence, 구매 불안 해소, offer/FAQ, production bridge로 pack family 정의
+3. OpenCrab에서 pack-backed 제작에 필요한 project/workflow 구조 점검
+4. private workspace 의존 정보를 제거하고 public install gate 추가
+5. Codex skill 형식으로 정리한 뒤 validation 통과
+6. GitHub 공개 배포용 README, 출처/경계 문서, pack manifest 예시 추가
+
+상세한 제작 과정은 [제작 과정 문서](docs/creation-process.md)를 참고하세요.
+
+## 샘플
+
+실제 상품을 넣기 전, 아래 샘플로 skill이 어떤 형태의 입력과 출력을 기대하는지 확인할 수 있습니다.
+
+- [샘플 상품 brief](examples/sample-product-brief.md)
+- [샘플 상세페이지 컷 블루프린트](examples/sample-cut-blueprint.md)
+
+샘플은 형식과 품질 기준을 보여주기 위한 예시입니다. 실제 제작에서는 OpenCrab pack 설치와 smoke test를 통과한 뒤 상품별 공식 출처로 fact map을 다시 만들어야 합니다.
 
 ## Smoke Test
 
