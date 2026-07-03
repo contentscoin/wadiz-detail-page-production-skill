@@ -18,7 +18,14 @@
 ```powershell
 git clone https://github.com/contentscoin/wadiz-detail-page-production-skill.git
 cd wadiz-detail-page-production-skill
-Copy-Item -Recurse ".\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
+$skillDir = "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production"
+New-Item -ItemType Directory -Force $skillDir | Out-Null
+Copy-Item -Recurse ".\wadiz-detail-page-production\*" $skillDir -Force
+
+# 레이어 합성/롱이미지 빌드 스크립트를 쓸 경우
+Push-Location "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production\scripts"
+npm install
+Pop-Location
 ```
 
 설치 후 Codex에서 다음처럼 호출합니다.
@@ -71,7 +78,11 @@ Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package
 - `wadiz-detail-page-production/references/production-workflow.md`: 실제 제작 워크플로우
 - `wadiz-detail-page-production/references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
 - `wadiz-detail-page-production/references/base-ecommerce-clone/`: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
+- `wadiz-detail-page-production/references/category-playbooks/`: 뷰티/식품, 테크/가전, 패션, 리빙/주방, 서비스/멤버십, 펀딩형 카테고리별 컷 구조와 claim 규칙
+- `wadiz-detail-page-production/references/layered-production.md`: 이미지 생성과 한글 텍스트 레이어를 분리하는 SVG 기반 제작 프로토콜
+- `wadiz-detail-page-production/references/fablecodex-gate-integration.md`: 선택형 FableCodex evidence gate 연동 방식
 - `wadiz-detail-page-production/references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
+- `wadiz-detail-page-production/scripts/`: `compose-layers.mjs`, `build-long-image.mjs`, `qa-detail-page.mjs` 실행 스크립트와 lockfile
 - `docs/creation-process.md`: 제작 과정과 설계 이유
 - `examples/`: 샘플 입력/출력 문서
 - `pack-manifest.example.json`: OpenCrab 팩 연결 예시 manifest

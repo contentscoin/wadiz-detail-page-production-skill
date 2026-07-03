@@ -81,7 +81,8 @@ The main quality decision is evidence usefulness, not package count. A project w
 - Never return only broad strategy for a production request. Return the concrete production template from `references/production-workflow.md`.
 - If pack status is `pack_not_verified`, do not create final images, HTML, ZIPs, or finished detail-page assets. Return planning documents only.
 - If asset gate is `conditional` or `blocked`, do not create final marketplace images. Concept-only images are allowed only when the user explicitly asks for visual generation, product-detail references are sufficient, and every artifact is labeled concept/publication-blocked.
-- Never present PIL, diagrammatic, placeholder, wireframe, or low-fidelity mock images as final Wadiz-style detail-page output.
+- Never present PIL, diagrammatic, placeholder, wireframe, or low-fidelity mock images as final Wadiz-style detail-page output. The layered SVG-text route in `references/layered-production.md` is not a mock: it composes a generated scene with deterministic Korean text layers and passes the same gates.
+- Never render price, discount, delivery, policy, warranty, or legal text through image-model generation alone. Such text must go through the `svg_layer` route so the delivered pixels match the confirmed facts verbatim.
 - Never let a concept draft, normalized image set, gallery, or ZIP imply publication readiness unless OCR/text match, logo fidelity, asset truth, legal/policy copy, and claim alignment have passed or been manually approved.
 - Never publish or hand off a production brief, cut blueprint, prompt package, QA report, or final package without explicit source attribution for pattern evidence, product facts, and assets.
 
@@ -89,6 +90,9 @@ The main quality decision is evidence usefulness, not package count. A project w
 
 - Read `references/production-workflow.md` for any real detail-page plan, cut structure, image prompt, QA, or delivery task.
 - Read `references/base-ecommerce-pipeline.md` whenever producing a cut plan, image prompt set, generated concept, gallery, ZIP, QA package, or regeneration queue.
+- Read `references/category-playbooks/README.md` before choosing cut count and structure; the category playbook overrides the base template and claim rules.
+- Read `references/layered-production.md` when a cut carries price, offer, spec, FAQ, delivery, policy, or legal text, or when in-image Korean text QA keeps failing. It defines `text_render_mode`, the `layers.json` manifest, SVG text layers, and the layer-aware regen loop.
+- Read `references/fablecodex-gate-integration.md` when the FableCodex plugin is available and gate state should be tracked mechanically (optional soft dependency).
 - Read `references/luckyball-pilot-lessons.md` when deciding whether concept generation can proceed from a product-reference photo and incomplete publication assets.
 - Read `references/opencrab-public-install.md` before sharing this skill publicly or using it outside a maintainer's private workspace.
 - Read `references/source-and-boundary.md` when preparing README, marketplace copy, compliance notes, or source attribution.

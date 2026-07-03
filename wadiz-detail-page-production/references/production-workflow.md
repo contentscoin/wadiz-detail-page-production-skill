@@ -79,6 +79,7 @@ Stop rules:
 - If mode is not `final_production_allowed`, the correct next deliverable is a production brief, not a mock image.
 - Exception: when the user explicitly asks for visual generation and the gate is `concept_generation_allowed`, the correct deliverable is a concept image set plus QA, not a publication candidate.
 - Never use PIL/simple shapes/wireframes as a substitute for final Wadiz-style detail-page images. If a wireframe is explicitly requested, label it `internal_wireframe`, not final output.
+- The layered SVG-text pipeline (`layered-production.md`) is a sanctioned final-production route, not a wireframe substitute: it requires a generated scene layer, a `layers.json` manifest, and the same gates as any final artifact.
 
 ## Work Type Routing
 
@@ -304,6 +305,8 @@ Fact statuses:
 
 ## Step 5. Default Detail-Page Structure
 
+Before applying the default table, route the product through `category-playbooks/README.md`. The playbook overrides cut roles, cut count, claim rules, and the category smoke query. Record the chosen category in `cut-plan.json` and every cut job. If no playbook matches, use the base template and mark `category_playbook: none_matched`.
+
 Default production shape:
 
 - 12 cuts
@@ -362,6 +365,13 @@ Avoid:
 - invented free shipping, same-day shipping, limited quantity, or discount claims
 
 ## Step 7. Visual And GIF Rules
+
+Text render mode (see `layered-production.md` for the full pipeline):
+
+- Every cut declares `text_render_mode`: `in_image`, `svg_layer`, or `hybrid`.
+- Cuts carrying price, discount, offer, spec, FAQ, delivery, policy, or legal text must use `svg_layer` or `hybrid` with that text in the SVG layer. Money and policy text never depends on image-model rendering.
+- `svg_layer` scenes are generated text-free; Korean copy is rendered deterministically as SVG and composited with `scripts/compose-layers.mjs`.
+- Text failures on layered cuts are fixed by editing the SVG layer and recompositing, not by regenerating the image.
 
 Visual rules:
 

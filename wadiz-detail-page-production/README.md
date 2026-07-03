@@ -19,7 +19,14 @@ Codex 로컬 스킬 폴더에 복사합니다.
 
 ```powershell
 # 저장소 루트에서 실행
-Copy-Item -Recurse ".\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
+$skillDir = "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production"
+New-Item -ItemType Directory -Force $skillDir | Out-Null
+Copy-Item -Recurse ".\wadiz-detail-page-production\*" $skillDir -Force
+
+# 레이어 합성/합본 스크립트 의존성 설치 (qa-detail-page.mjs는 의존성 불필요)
+Push-Location "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production\scripts"
+npm install
+Pop-Location
 ```
 
 설치 후 다음처럼 호출합니다.
@@ -106,6 +113,12 @@ FMG Luckyball 작업에서는 상품 사진을 그대로 누끼 합성하는 방
 - `references/production-workflow.md`: 실제 제작 워크플로우
 - `references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
 - `references/base-ecommerce-clone/`: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
+- `references/layered-production.md`: SVG 텍스트 레이어 파이프라인 (`text_render_mode`, `layers.json`, 레이어 인식 regen)
+- `references/category-playbooks/`: 카테고리별 컷 구조·claim 규칙·스모크 쿼리 (뷰티/식품, 테크/가전, 패션, 리빙/주방, 서비스, 펀딩형)
+- `references/fablecodex-gate-integration.md`: FableCodex Goal Ledger/Findings Gate 연동 (선택)
 - `references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
 - `references/opencrab-public-install.md`: OpenCrab 공개팩 설치 안내
 - `references/source-and-boundary.md`: 출처와 사용 경계
+- `scripts/compose-layers.mjs`: layers.json 기반 레이어 합성 (sharp + @resvg/resvg-js)
+- `scripts/build-long-image.mjs`: 컷 세로 합본 long image 조립
+- `scripts/qa-detail-page.mjs`: 기계적 QA (컷 수/해상도/SVG 텍스트 verbatim 검사, 의존성 없음)
