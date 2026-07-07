@@ -1,33 +1,32 @@
 # 와디즈 상세페이지 프로덕션 스킬
 
-`wadiz-detail-page-production`은 와디즈 스타일의 한국어 이커머스 상세페이지를 기획, 콘셉트 이미지 생성, QA, 패키징하기 위한 Codex 스킬입니다.
+`wadiz-detail-page-production`은 와디즈 스타일의 한국어 이커머스/서비스 상세페이지를 기획, 콘셉트 이미지 생성, QA, 패키징하기 위한 공유 스킬팩입니다. Codex/OpenAI용 adapter를 포함하지만 Hermes, Cursor/Claude, 로컬 CLI에서도 같은 core 규칙을 사용할 수 있도록 runtime-specific 전제는 분리합니다.
 
-이 스킬은 단순 카피 작성 스킬이 아니라, [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 상세페이지 제작 파이프라인 위에 [OpenCrab](https://opencrab.sh) 와디즈 온톨로지팩을 얹은 제작 프로토콜입니다.
+이 스킬은 단순 카피 작성 스킬이 아니라, 기존 상세페이지 제작 파이프라인 위에 OpenCrab 와디즈 온톨로지팩을 얹은 제작 프로토콜입니다.
 
 ## 핵심 구조
 
 | 레이어 | 역할 |
 |---|---|
-| `ecommerce-detail-page` 백본 | [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
-| OpenCrab 와디즈 온톨로지팩 | [opencrab.sh](https://opencrab.sh) 기반 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
+| `ecommerce-detail-page` 백본 | 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
+| OpenCrab 와디즈 온톨로지팩 | 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
 | `detail-page-reference-analyzer` | 기존 상세페이지/URL/레퍼런스 역기획과 비공개 참고 분석 |
 | `wadiz-detail-page-production` | 위 레이어들을 조립하고 pack/fact/asset/concept/publication/QA 게이트를 관리 |
 
 ## 설치
 
+### Codex/OpenAI
+
 Codex 로컬 스킬 폴더에 복사합니다.
 
 ```powershell
 # 저장소 루트에서 실행
-$skillDir = "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production"
-New-Item -ItemType Directory -Force $skillDir | Out-Null
-Copy-Item -Recurse ".\wadiz-detail-page-production\*" $skillDir -Force
-
-# 레이어 합성/합본 스크립트 의존성 설치 (qa-detail-page.mjs는 의존성 불필요)
-Push-Location "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production\scripts"
-npm install
-Pop-Location
+Copy-Item -Recurse ".\skills\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
 ```
+
+### Hermes / 기타 agent
+
+Hermes에서는 이 repo의 `wadiz-detail-page-production/` 폴더를 프로필 skill tree에 설치하거나 symlink합니다. 다른 agent에서는 해당 agent의 skill/plugin 폴더 규칙에 맞춰 같은 폴더를 등록합니다.
 
 설치 후 다음처럼 호출합니다.
 
@@ -86,39 +85,20 @@ FMG Luckyball 작업에서는 상품 사진을 그대로 누끼 합성하는 방
 
 ## 출처와 경계
 
-- 기본 상세페이지 제작 파이프라인은 [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill)의 `ecommerce-detail-page` 계열 스킬을 백본으로 사용합니다.
-- 와디즈식 흐름과 설득 구조는 [OpenCrab](https://opencrab.sh)에서 사용자의 와디즈 온톨로지팩을 조회하여 적용합니다.
+- 기본 상세페이지 제작 파이프라인은 기존 `ecommerce-detail-page` 스킬을 백본으로 사용합니다.
+- 와디즈식 흐름과 설득 구조는 사용자의 OpenCrab 와디즈 온톨로지팩을 조회하여 적용합니다.
 - 와디즈 원본 페이지의 이미지, GIF, 문구를 복제하는 목적이 아닙니다.
 - OpenCrab 팩은 구조, 리듬, 소구점, 증거 배치, QA 규칙을 참고하는 용도이며, 특정 상품의 가격/혜택/약관/인증 사실을 대신 증명하지 않습니다.
 - 상품별 사실은 공식 URL, 판매자 제공 문서, 사용자 승인 자료로 별도 확인해야 합니다.
 
-## 출처 표기 규칙
-
-상세페이지 기획서, 컷 블루프린트, 이미지 프롬프트, QA 리포트, 패키지 manifest에는 다음 출처 범주를 분리해 적습니다.
-
-| 출처 범주 | 의미 | 사용 한계 |
-|---|---|---|
-| `wadiz_pattern_source` | [OpenCrab](https://opencrab.sh) 와디즈팩에서 조회한 섹션 흐름, 카피/비주얼 패턴, GIF/증거 배치, QA 규칙 | 상품별 사실을 증명하지 않음 |
-| `product_fact_source` | 공식 URL, 판매자 자료, 사용자 승인 문서, 첨부 파일, 명시적 확인 | 와디즈 스타일 패턴을 대신하지 않음 |
-| `asset_source` | 제품 사진, 로고, 렌더, 스크린샷, 영상, 승인된 생성 방향 | 사실/성능/혜택 주장을 대신 증명하지 않음 |
-| `example_source` | 럭키볼 파일럿 같은 운영 사례와 QA 교훈 | 다른 상품의 사실 출처로 쓰지 않음 |
-| `not_verified` | 확인되지 않은 추정, 누락 자료, unsupported claim | 최종 문구/판매용 이미지에 사용 금지 |
-
-출처 표가 비어 있거나 상품 사실 출처가 부족하면 결과물은 `planning_only`, `blueprint_only`, `prompt_brief_only`, 또는 `concept/publication_blocked`로 표시해야 합니다.
-
 ## 포함 파일
 
 - `SKILL.md`: 스킬 진입점과 운영 규칙
-- `agents/openai.yaml`: Codex 표시명과 기본 호출문
+- `agents/openai.yaml`: Codex/OpenAI 표시명과 보수적인 기본 호출문
+- `references/platform-and-runtime-adapters.md`: Hermes/Codex/OpenAI/기타 agent 간 공유 repo 경계와 adapter 규칙
 - `references/production-workflow.md`: 실제 제작 워크플로우
 - `references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
-- `references/base-ecommerce-clone/`: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
-- `references/layered-production.md`: SVG 텍스트 레이어 파이프라인 (`text_render_mode`, `layers.json`, 레이어 인식 regen)
-- `references/category-playbooks/`: 카테고리별 컷 구조·claim 규칙·스모크 쿼리 (뷰티/식품, 테크/가전, 패션, 리빙/주방, 서비스, 펀딩형)
-- `references/fablecodex-gate-integration.md`: FableCodex Goal Ledger/Findings Gate 연동 (선택)
+- `references/base-ecommerce-clone/`: 기존 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
 - `references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
 - `references/opencrab-public-install.md`: OpenCrab 공개팩 설치 안내
 - `references/source-and-boundary.md`: 출처와 사용 경계
-- `scripts/compose-layers.mjs`: layers.json 기반 레이어 합성 (sharp + @resvg/resvg-js)
-- `scripts/build-long-image.mjs`: 컷 세로 합본 long image 조립
-- `scripts/qa-detail-page.mjs`: 기계적 QA (컷 수/해상도/SVG 텍스트 verbatim 검사, 의존성 없음)

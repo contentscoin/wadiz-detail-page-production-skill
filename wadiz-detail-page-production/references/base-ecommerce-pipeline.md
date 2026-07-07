@@ -1,11 +1,8 @@
 # Base Ecommerce Pipeline
 
 This file is the self-contained execution backbone cloned from the older
-`ecommerce-detail-page` skill published at
-https://github.com/aisyncclub/detail_page_codex_skill. The Wadiz production
-skill extends this pipeline; it must not replace it with OpenCrab lookup alone.
-
-Canonical OpenCrab platform source: https://opencrab.sh
+`ecommerce-detail-page` skill. The Wadiz production skill extends this pipeline;
+it must not replace it with OpenCrab lookup alone.
 
 ## Role Split
 
@@ -13,35 +10,49 @@ Use these roles when the Wadiz skill is active:
 
 | Layer | Responsibility |
 |---|---|
-| Base ecommerce pipeline | product intake, photo analysis, category/style choice, exact cut count, cut plan, approved copy, image prompt/job queue, parallel generation, gallery/ZIP, QA, regen queue |
-| OpenCrab Wadiz ontology packs | choose Wadiz-style section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, claim-evidence rules, visual/OCR QA rules from the user's OpenCrab workspace at https://opencrab.sh |
+| Base ecommerce/service pipeline | product/service intake, product photo or service proof analysis, category/style choice, exact cut count, cut plan, approved copy, image prompt/job queue, parallel generation, gallery/ZIP, QA, regen queue |
+| OpenCrab Wadiz ontology packs | choose Wadiz-style section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, claim-evidence rules, visual/OCR QA rules |
 | Detail page reference analyzer | privately analyze external reference/detail pages, collect reference images, reverse-plan reusable patterns |
 | Wadiz production skill | orchestrate the above, enforce gates, keep product facts separate from reference patterns, and report concept vs publication readiness honestly |
 
 ## Default Execution Order
 
 1. Classify request: setup, planning, prompt brief, concept generation, final production, QA repair, or packaging.
-2. Intake product facts and source links. Mark missing facts as `confirmation_needed`.
-3. Check product photos or reference images before planning.
-4. If photos exist, analyze product shape, material, label/logo, color, visible facts, photo quality, and best cut usage.
-5. Decide whether photos are `actual_asset`, `reference_only`, `regeneration_recommended`, or `not_usable`.
-6. Query OpenCrab Wadiz packs when available and fill the evidence matrix.
-7. Select a 12-cut or 15-cut structure from Wadiz evidence first, then base ecommerce defaults.
-8. Write cut-by-cut role, headline, subcopy, in-image Korean text, visual direction, facts/evidence, and QA notes.
-9. Build `fact-map.json`, `cut-plan.json`, prompt files, and `imagegen-jobs.json` before any image generation.
-10. Launch one independent cut job per cut when image generation is allowed. Keep the cut count exact.
-11. Build gallery HTML and ZIP only for generated artifacts that the current gate allows.
-12. Run QA: file count, dimensions, OCR/text match, layout/readability, product consistency, claim alignment, asset truth, and ZIP integrity.
-13. Put only failed cuts in `regen-queue.json`; regenerate failed cuts only.
-14. Report the state as concept-ready, publication-blocked, or publication-ready.
+2. Classify offer type: physical product, service/intangible, membership/subscription, course/program, B2B/professional package, event/experience, or hybrid.
+3. Intake product/service facts and source links. Mark missing facts as `confirmation_needed`.
+4. For physical products, check product photos or reference images before planning.
+5. For services/intangibles, analyze service evidence before planning: process, people, proof, deliverables, environment, operating terms, policy/caution copy, and buyer scenarios.
+6. If photos exist, analyze product shape, material, label/logo, color, visible facts, photo quality, and best cut usage.
+7. Decide whether photos/proof assets are `actual_asset`, `reference_only`, `regeneration_recommended`, or `not_usable`.
+8. Query OpenCrab Wadiz packs when available and fill the evidence matrix.
+9. Select a 12-cut or 15-cut structure from Wadiz evidence first, then base ecommerce/service defaults.
+10. Write cut-by-cut role, headline, subcopy, in-image Korean text or separate text-panel copy, visual direction, facts/evidence, and QA notes.
+11. Build `fact-map.json`, `cut-plan.json`, prompt files, and `imagegen-jobs.json` before any image generation.
+12. Launch one independent cut job per cut when image generation is allowed. Keep the cut count exact.
+13. Build gallery HTML and ZIP only for generated artifacts that the current gate allows.
+14. Run QA: file count, dimensions, OCR/text match, layout/readability, product/service consistency, claim alignment, asset truth, and ZIP integrity.
+15. Put only failed cuts in `regen-queue.json`; regenerate failed cuts only.
+16. Report the state as concept-ready, publication-blocked, or publication-ready.
 
 ## Cut Count Contract
 
-- Default: 12 mobile cuts.
-- High-consideration, service, membership, subscription, or policy-heavy products: 15 cuts.
+- Default physical product: 12 mobile cuts.
+- High-consideration service, membership, subscription, course, B2B/professional package, event/experience, or policy-heavy offer: 15 cuts.
+- If a non-product offer is simple, 12 cuts are allowed only after merging repeated proof/policy sections intentionally.
 - If the user chooses a count, output exactly that count.
 - Do not collapse a 12-cut or 15-cut plan into one image unless explicitly asked.
 - For image pages, use 1080 x 1600 per cut by default. Long images are derived packaging, not the source of truth.
+
+## Service / Intangible Offer Policy
+
+When there is no physical product photo, do not degrade into generic branding, a company homepage, or abstract mood cuts. Use service evidence instead:
+
+- Treat process, people, proof, deliverables, environment, terms, and buyer scenarios as the service equivalent of product specs.
+- Read `service-intangible-detail-page.md` and choose the 15-cut service story spine unless the offer is clearly simple.
+- Build visuals around real evidence roles: journey diagram, expert proof, scene proof, deliverable proof, use-case scenarios, offer cards, FAQ/policy cards, and CTA.
+- If real service-scene photos or proof assets are missing, concept visuals may be generated only with concept/publication-blocked labels.
+- Named experts or professionals require verified bios; otherwise exclude them from customer-facing claims.
+- Outcomes must be bounded; avoid guaranteed success, revenue, health, legal, tax, or financial claims.
 
 ## Product Photo Policy
 
@@ -74,7 +85,7 @@ Concept generation may produce cut images, gallery HTML, ZIP, contact sheet, and
 Use `final_production_allowed` only when all are true:
 
 - Wadiz pack retrieval is verified or explicitly replaced by a user-approved structure source.
-- Product facts, price, offer, terms, delivery, returns, and risky claims are confirmed.
+- Product/service facts, price, offer, terms, delivery/returns or service operation/refund/cancel rules, and risky claims are confirmed.
 - Required product/package/logo/proof assets are approved or a documented generation route is approved.
 - OCR/text-match is pass or manually approved.
 - Logo fidelity, generated package truth, and legal/policy wording have been checked.

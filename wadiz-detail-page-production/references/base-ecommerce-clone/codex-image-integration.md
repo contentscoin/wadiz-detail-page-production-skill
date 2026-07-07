@@ -85,13 +85,7 @@ Cursor/Claude 재시작 후 MCP `codex` Connected 확인.
         "칫솔모 · 헤드 · 그립감 확인"
       ],
       "aspect_ratio": "9:16",
-      "recording_owner": "parent",
-      "text_render_mode": "hybrid",
-      "category": "living_kitchen",
-      "style_template": "coupang_practical",
-      "layer_outputs": [],
-      "svg_layers": [],
-      "scene_prompt_no_text": false
+      "recording_owner": "parent"
     }
   ]
 }
@@ -103,13 +97,6 @@ Cursor/Claude 재시작 후 MCP `codex` Connected 확인.
 - 컷 job은 **서로 `depends_on` 없음** — 전부 병렬 (`parallelizable_after: []`).
 - `korean_text_required`는 QA 기준문. 프롬프트에도 verbatim 반복.
 - 상품 사진 없으면 `input_images: []`, brief에 `판매용 초안` 표기.
-
-**Schema v2 필드** (레이어 파이프라인, `../layered-production.md` 참조):
-
-- `text_render_mode`: `in_image` | `svg_layer` | `hybrid`. 가격·정책·법적 문구가 있는 컷(offer/FAQ/caution)은 `svg_layer` 또는 `hybrid` 강제.
-- `svg_layer` 컷의 Codex job은 **텍스트 없는 씬(`layer-0-bg.png`)만 생성** — 프롬프트에 `No text, no letters, no typography` 추가(`scene_prompt_no_text: true`). 한글 텍스트는 coordinator가 SVG 레이어로 직접 작성 후 `compose-layers.mjs`로 합성.
-- `category` + `style_template`: `../category-playbooks/README.md` 라우팅 결과를 기록.
-- 엔진 자동 라우팅: 텍스트 heavy 컷 = gpt_image 또는 svg_layer 경로, 무텍스트 히어로/매크로 = nano_banana 허용.
 
 ## Codex MCP Prompt Template (Claude Code / Cursor)
 
@@ -229,13 +216,6 @@ Do not translate, omit, or replace with English. No placeholder text bars.
 
 [image-production-workflow.md](image-production-workflow.md)의 Korean Text QA와 동일. 실패 컷만 codex regen.
 
-**레이어 인식 regen** (`svg_layer`/`hybrid` 컷, `../layered-production.md` §Layer-Aware Regen Loop):
-
-- 텍스트 실패 → SVG 레이어 수정 + 재합성만. **이미지 모델 재호출 금지** (`svg_revision++`).
-- 가격/정책 변경 → badge/fact SVG만 교체.
-- 씬 실패(제품 형태·무드) → `layer-0-bg.png`만 재생성, SVG 레이어 유지 (`regen_cycle++`).
-- 3-cycle escalation은 이미지 모델 regen에만 적용.
-
 Regen 프롬프트 추가 지시:
 
 1. 승인된 한글 문구 verbatim 재삽입
@@ -266,7 +246,7 @@ ZIP: `cuts/` 전체 + `brief.md` + `qa-report.md` + `detail-page-manifest.json`.
 
 ## What NOT To Do
 
-- 기획 단계에서 **비공식** 텍스트 오버레이로 완성본을 가장 (정식 경로는 `text_render_mode: svg_layer` + `layers.json` + `compose-layers.mjs` — `../layered-production.md` 참조. 매니페스트 없는 임시 합성만 금지)
+- 기획 단계에서 SVG/Sharp/Photoshop 텍스트 오버레이로 한글 합성 (사용자 명시 요청 시만)
 - nano_banana 단독으로 한글 heavy 컷 생성 후 "완료" 처리
 - 12컷 계획을 1장 세로 합본으로 축소
 - codex 없이 "이미지 생성됐다"고 가정

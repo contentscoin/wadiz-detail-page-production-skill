@@ -5,9 +5,6 @@
 This public skill must not require a maintainer's private OpenCrab workspace,
 project ID, workflow ID, package ID, MCP URL, or token.
 
-Canonical OpenCrab platform source: https://opencrab.sh
-Canonical base detail-page skill source: https://github.com/aisyncclub/detail_page_codex_skill
-
 At runtime, create or reuse the user's own OpenCrab project:
 
 - Recommended project name: `wadiz_detail_page_full_fidelity_project`
@@ -38,20 +35,6 @@ Avoid evaluating a pack only by node count. Useful production retrieval should r
 - A clear application rule for the current product
 - A risk or non-use condition
 - Enough specificity to change the actual cut plan
-
-## Source Attribution Model
-
-Pack-backed production must keep Wadiz pattern evidence separate from product-specific truth.
-
-| Source family | Primary use |
-|---|---|
-| `wadiz_pattern_source` | OpenCrab Wadiz pack evidence from https://opencrab.sh for section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, visual rhythm, and QA rules |
-| `product_fact_source` | Official product/service URLs, seller documents, user-approved materials, attached files, or explicit user confirmation for facts, claims, price, options, delivery, terms, and policies |
-| `asset_source` | Product photos, logos, brand assets, screenshots, videos, renders, approved generated directions, and final visual asset approvals |
-| `example_source` | Lessons from pilot runs such as Luckyball, used only to guide workflow and QA behavior |
-| `not_verified` | Missing, inferred, unsupported, or publication-blocking items |
-
-OpenCrab Wadiz packs can decide how to arrange persuasion. They must not be treated as proof of the current product's price, legal condition, guarantee, certification, ranking, performance, discount, delivery promise, or policy text.
 
 ## Detail-Page Production Formula
 

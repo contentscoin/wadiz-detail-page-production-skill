@@ -2,11 +2,9 @@
 
 Use this reference when a user wants to run Wadiz detail-page production with their own OpenCrab account.
 
-Canonical OpenCrab platform source: https://opencrab.sh
-
 ## Requirement
 
-This skill requires an installed OpenCrab Wadiz detail-page ontology pack in the user's OpenCrab workspace at https://opencrab.sh. The GitHub repository contains only the Codex skill and setup documents. It does not contain raw crawl data, original media, or ontology pack ZIP files.
+This skill requires an installed OpenCrab Wadiz detail-page ontology pack. The GitHub repository contains only the Codex skill and setup documents. It does not contain raw crawl data, original media, or ontology pack ZIP files.
 
 ## Install Procedure
 
@@ -14,11 +12,12 @@ This skill requires an installed OpenCrab Wadiz detail-page ontology pack in the
 2. Search Marketplace or a team/company listing for the Wadiz detail-page ontology pack.
 3. If the pack is not installed, open the returned OpenCrab listing URL and install it in the user's workspace.
 4. Search installed packs and collect package IDs for the required pack families.
-5. Create or reuse a project named `wadiz_detail_page_full_fidelity_project`.
-6. Attach all required package IDs to that project.
-7. Run smoke tests before making a detail page.
+5. Check whether the account has an authorized existing Wadiz project/workflow before creating a new one. Known default-profile route names may include `wadiz_detail_page_full_fidelity_project_20260629` and `wadiz_detail_page_full_fidelity_workflow_20260630`; use them only when the current profile/privacy policy permits it.
+6. Create or reuse a project named `wadiz_detail_page_full_fidelity_project` when no authorized project exists.
+7. Attach all required package IDs to that project.
+8. Run smoke tests before making a detail page.
 
-Do not accept a marketplace result only because it matched the search query. Reject false positives whose title, description, category, tags, or pack families are not explicitly about Wadiz detail-page references. For example, a generic laptop specs pack returned by a `Wadiz detail page` query is not a valid Wadiz pack.
+Do not accept a marketplace result only because it matched the search query. Reject false positives whose title, description, category, tags, or pack families are not explicitly about Wadiz detail-page references. For example, a generic laptop specs pack returned by a `Wadiz detail page` query is not a valid Wadiz pack. If Marketplace returns unrelated packs, immediately check installed packs, `opencrab_project_manage(query="wadiz")`, and `opencrab_list_workflows(query="wadiz detail page")` before concluding that no Wadiz pack exists.
 
 ## Required Pack Families
 
