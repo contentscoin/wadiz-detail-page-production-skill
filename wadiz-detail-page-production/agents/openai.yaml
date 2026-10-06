@@ -1,8 +1,8 @@
 interface:
   display_name: "Wadiz Detail Page Production"
-  short_description: "Portable Wadiz-style detail pages with optional OpenCrab evidence and an ecommerce production backbone."
+  short_description: "Product-specific detail pages with verified image and GIF jobs."
   brand_color: "#1F6FEB"
-  default_prompt: "Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package a source-bound Wadiz-style Korean detail page with the tools available in this Codex/OpenAI runtime. Do not assume Hermes profiles, private OpenCrab/MCP access, Telegram delivery, or local paths unless explicitly configured."
+  default_prompt: "Use $wadiz-detail-page-production to plan a category/topic-specific Korean detail page, validate its copy and evidence, and prepare verified GPT Image 2.5 image/GIF delivery jobs."
 
 policy:
   allow_implicit_invocation: true

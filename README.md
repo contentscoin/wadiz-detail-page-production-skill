@@ -1,127 +1,100 @@
 # 와디즈 상세페이지 프로덕션 스킬
 
-`wadiz-detail-page-production`은 와디즈 스타일의 한국어 이커머스 상세페이지를 기획, 콘셉트 이미지 생성, QA, 패키징하기 위한 Codex 스킬입니다.
+상품 사실과 OpenCrab 와디즈 근거를 바탕으로 **카테고리 × 주제 × 상품별 기획, 카피 검증, GPT Image 2.5 이미지 작업, 실제 GIF, 납품 패키지**를 만드는 스킬입니다. [sangse](https://github.com/contentscoin/sangse)의 구매 질문·인터뷰·스타일·카피 슬롯·수치 출처 검사를 이 저장소의 공통 제작 규격에 통합합니다.
 
-이 저장소는 스킬을 바로 설치할 수 있도록 `wadiz-detail-page-production/` 폴더를 기본 탑재합니다.
-
-## 핵심 구조
-
-| 레이어 | 역할 |
-|---|---|
-| `ecommerce-detail-page` 백본 | [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
-| OpenCrab 와디즈 온톨로지팩 | [opencrab.sh](https://opencrab.sh) 기반 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
-| `detail-page-reference-analyzer` | 기존 상세페이지/URL/레퍼런스 역기획과 비공개 참고 분석 |
-| `wadiz-detail-page-production` | 위 레이어를 조립하고 pack/fact/asset/concept/publication/QA 게이트를 관리 |
+기본 기획은 상품에 필요한 섹션을 구성합니다. 12·15컷은 명시적으로 선택하는 호환 프리셋이며, 모든 상품에 같은 순서를 강제하지 않습니다.
 
 ## 설치
+
+Node.js 20.9.0 이상이 필요합니다. GIF 변환에는 PATH에 있는 FFmpeg/FFprobe가 필요하며, 실제 지원 여부는 제작 환경에서 확인합니다.
+
+### 릴리스 ZIP 설치
+
+[Releases](https://github.com/contentscoin/wadiz-detail-page-production-skill/releases)에서 공개된 `wadiz-detail-page-production-v0.3.0.zip`과 `.zip.sha256`를 내려받은 뒤 설치합니다. 릴리스 게시 전에는 아래 소스 설치 또는 로컬 패키지 제작을 사용합니다.
+
+```powershell
+$wadizZip = '.\wadiz-detail-page-production-v0.3.0.zip'
+$wadizExpectedHash = (Get-Content -LiteralPath "$wadizZip.sha256").Split(' ')[0]
+if ((Get-FileHash -LiteralPath $wadizZip -Algorithm SHA256).Hash.ToLowerInvariant() -ne $wadizExpectedHash) { throw '릴리스 체크섬 불일치' }
+Expand-Archive -LiteralPath $wadizZip -DestinationPath '.\wadiz-release-v0.3.0'
+$wadizSkillDir = Join-Path $env:USERPROFILE '.codex\skills\wadiz-detail-page-production'
+if (Test-Path -LiteralPath $wadizSkillDir) { throw '기존 스킬을 별도 백업한 뒤 새 설치 폴더를 준비해 주세요.' }
+New-Item -ItemType Directory -Path $wadizSkillDir | Out-Null
+Copy-Item -Recurse '.\wadiz-release-v0.3.0\wadiz-detail-page-production\*' $wadizSkillDir
+Push-Location (Join-Path $wadizSkillDir 'scripts')
+npm ci
+Pop-Location
+```
+
+ZIP 안에 설치용 폴더, 라이선스 고지, 리소스별 SHA-256 manifest가 포함됩니다. 의존성·인증·실행 산출물은 포함하지 않습니다. 자세한 변경 내용은 [v0.3.0 릴리스 노트](docs/releases/v0.3.0.md)를 참고하세요.
+
+### 소스 설치
 
 ```powershell
 git clone https://github.com/contentscoin/wadiz-detail-page-production-skill.git
 cd wadiz-detail-page-production-skill
-$skillDir = "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production"
-New-Item -ItemType Directory -Force $skillDir | Out-Null
-Copy-Item -Recurse ".\wadiz-detail-page-production\*" $skillDir -Force
-
-# 레이어 합성/롱이미지 빌드 스크립트를 쓸 경우
-Push-Location "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production\scripts"
-npm install
+$wadizSkillDir = Join-Path $env:USERPROFILE '.codex\skills\wadiz-detail-page-production'
+if (Test-Path -LiteralPath $wadizSkillDir) { throw '기존 스킬을 별도 백업한 뒤 새 설치 폴더를 준비해 주세요.' }
+New-Item -ItemType Directory -Path $wadizSkillDir | Out-Null
+Copy-Item -Recurse '.\wadiz-detail-page-production\*' $wadizSkillDir
+Copy-Item '.\LICENSE' $wadizSkillDir
+Copy-Item '.\THIRD_PARTY_NOTICES.md' $wadizSkillDir
+Push-Location (Join-Path $wadizSkillDir 'scripts')
+npm ci
 Pop-Location
 ```
 
-설치 후 Codex에서 다음처럼 호출합니다.
+다른 에이전트에서는 동일한 `wadiz-detail-page-production/` 폴더와 라이선스 고지를 해당 환경의 스킬 폴더에 등록합니다. Codex/Hermes의 개인 설정·OpenCrab 인증·메시지 채널은 포함하지 않습니다.
+
+로컬 설치 ZIP은 추가 의존성 설치 없이 만들고 검사할 수 있습니다.
+
+```powershell
+node wadiz-detail-page-production/scripts/package-skill.mjs --out output/wadiz-detail-page-production-v0.3.0.zip
+node wadiz-detail-page-production/scripts/package-skill.mjs --verify output/wadiz-detail-page-production-v0.3.0.zip
+```
+
+호출 예시:
 
 ```text
-Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package a Wadiz-style Korean ecommerce detail page.
+Use $wadiz-detail-page-production to plan a gift-focused detail page for this product,
+validate its facts and OpenCrab evidence, and prepare GPT Image 2.5 image/GIF jobs.
 ```
-
-한국어 요청 예시:
 
 ```text
-와디즈 스타일로 이 상품 상세페이지 15컷 기획하고 콘셉트 이미지까지 만들어줘.
-제품 사진은 참고만 하고, 누끼 합성하지 말고 전체 장면을 생성해줘.
+이 상품의 문제 해결형 상세페이지를 기획해줘. 제공한 사진·상품 사실을 기준으로
+카피와 GIF 목적을 먼저 정하고, 승인 후 이미지와 GIF를 제작해줘.
 ```
 
-## 중요한 전제
+## 제작 흐름
 
-이 저장소만 설치한다고 완전한 pack-backed 제작이 되는 것은 아닙니다.
+| 단계 | 결과 |
+|---|---|
+| 상품 인터뷰 | ProductBrief: 카테고리·주제·SKU·옵션·사실·자산·미확인 사항 |
+| OpenCrab 조회 검증 | 실제 원문 관련성·출처를 검사한 근거표 |
+| 가변 기획 | PagePlan: 고객 질문·카피·근거·시각 구성·미디어·배치 이유 |
+| 카피 검수·승인 | 구매 질문 누락, 카피 슬롯, 수치 출처와 실제 사실/계산 검사 |
+| 이미지 작업 준비 | MediaJob: 확인된 GPT Image 2.5 도구로 전달할 승인 작업 |
+| 이미지·GIF 제작 | 실제 결과 출처, GIF·정지 대체 이미지·변환 검수 |
+| 납품 | 순서대로 조립된 미리보기·파일·manifest·QA·ZIP |
 
-[OpenCrab](https://opencrab.sh) 기반 제작을 하려면 사용자의 OpenCrab 워크스페이스에 와디즈 상세페이지 온톨로지팩이 설치되어 있고, 해당 팩들이 프로젝트에 연결되어 있어야 합니다. 팩이 없거나 retrieval smoke test가 실패하면 이 스킬은 기획 프레임워크 또는 콘셉트 제작 프로토콜로만 작동합니다.
+카테고리는 식품·뷰티·테크/가전·패션·리빙·서비스, 주제는 선물·문제 해결·신제품·프리미엄·비교·재출시를 지원합니다. 펀딩/메이커 조건과 복합 상품의 정보 요구를 함께 반영합니다. sangse의 8가지 구매 질문은 누락 검사이며 섹션 순서가 아닙니다.
 
-## 상태 게이트
+명령과 작업 예시는 [실행 계약](wadiz-detail-page-production/references/base-ecommerce-pipeline.md), 인터페이스·호환은 [통합 안내](docs/integration.md), 제작 판단은 [워크플로](wadiz-detail-page-production/references/production-workflow.md)를 참고하세요.
 
-| 상태 | 의미 | 허용되는 결과물 |
-|---|---|---|
-| `pack_not_verified` | OpenCrab 와디즈팩 설치/검색이 확인되지 않음 | 기획 골격, 필요팩 안내 |
-| `pack_retrieval_weak` | 팩은 있으나 검색 결과가 메타데이터/핸드오프 수준 | 근거 보강 리포트, production brief |
-| `asset_gate_conditional` | 기획은 가능하지만 최종 판매용 자산이 부족 | 컷블루프린트, 프롬프트 브리프 |
-| `concept_generation_allowed` | 사용자가 명시적으로 콘셉트 생성을 원하고 제품 참조가 충분함 | 콘셉트 이미지, 갤러리, ZIP, QA 리포트 |
-| `final_production_allowed` | pack/fact/asset/OCR/logo/policy/claim 게이트 통과 | 최종 판매 후보 상세페이지 패키지 |
+## 이미지·GIF 실행 조건
 
-## 콘셉트와 최종본 구분
+이미지 생성은 자체 도구(`codex_native`) 또는 `ima2`만 사용합니다. GPT Image 2.5와 참조 이미지 전달, 필요한 편집 기능을 실제 실행 환경에서 확인해야 합니다. 모델 확인이 없는 자체 도구나 연결되지 않은 ima2 서버는 작업을 보류합니다. 준비된 요청 파일은 생성 완료가 아니며, 실제 결과의 모델·참조·출력 출처를 별도로 기록합니다. 별도 API 과금 경로와 구형 모델 자동 대체는 제공하지 않습니다.
 
-콘셉트 이미지가 잘 나왔다고 곧바로 판매용 최종본은 아닙니다.
+유료 생성 전 예상 사용량/비용과 범위를 확인받습니다. GIF는 검증된 이미지/생성 설명 이미지의 프레임 시퀀스 또는 제공된 실사 영상을 변환합니다. AI 영상 모델 호출은 포함하지 않습니다. 실사 자료가 없는 성능 증명은 생성 장면으로 대체하지 않습니다.
 
-```json
-{
-  "concept_generation_status": "not_started | complete | failed",
-  "production_asset_status": "missing | incomplete | ready",
-  "publication_status": "blocked | review_required | ready"
-}
-```
+자동 QA는 파일·치수·재생·수치 연결 등을 검사합니다. 상품 외형·글자·사실·움직임·배치의 실제 검수와 판매용 승인도 필요합니다. 미리보기 패키지와 publication-ready 상태는 구분됩니다.
 
-최종 판매용으로 부르려면 OCR/text-match, 공식 로고/브랜드 에셋, asset truth level, 정책 문구, claim alignment 검증이 필요합니다.
+## OpenCrab·출처·호환
 
-## 포함 파일
+OpenCrab 팩은 사용자의 워크스페이스에서 조회합니다. 이 저장소에 원문 페이지, 와디즈 원본 이미지/GIF, 팩 ZIP, private ID나 인증을 포함하지 않습니다. 검색이 원문 없는 메타데이터·다른 상품군을 반환하면 해당 근거를 채택하지 않습니다. 오픈크랩의 설득 구조는 현재 상품의 가격·효능·인증·후기를 증명하지 않습니다.
 
-- `wadiz-detail-page-production/SKILL.md`: 스킬 진입점과 운영 규칙
-- `wadiz-detail-page-production/README.md`: 스킬 폴더 단위 설치/사용 안내
-- `wadiz-detail-page-production/references/production-workflow.md`: 실제 제작 워크플로우
-- `wadiz-detail-page-production/references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
-- `wadiz-detail-page-production/references/base-ecommerce-clone/`: [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) 기반 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
-- `wadiz-detail-page-production/references/category-playbooks/`: 뷰티/식품, 테크/가전, 패션, 리빙/주방, 서비스/멤버십, 펀딩형 카테고리별 컷 구조와 claim 규칙
-- `wadiz-detail-page-production/references/layered-production.md`: 이미지 생성과 한글 텍스트 레이어를 분리하는 SVG 기반 제작 프로토콜
-- `wadiz-detail-page-production/references/fablecodex-gate-integration.md`: 선택형 FableCodex evidence gate 연동 방식
-- `wadiz-detail-page-production/references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
-- `wadiz-detail-page-production/scripts/`: `compose-layers.mjs`, `build-long-image.mjs`, `qa-detail-page.mjs` 실행 스크립트와 lockfile
-- `docs/creation-process.md`: 제작 과정과 설계 이유
-- `examples/`: 샘플 입력/출력 문서
-- `pack-manifest.example.json`: OpenCrab 팩 연결 예시 manifest
-
-## 출처와 경계
-
-이 스킬은 와디즈 상세페이지를 그대로 복사하기 위한 도구가 아닙니다. 와디즈식 설득 구조, 섹션 흐름, 소구점, 증거 배치, QA 규칙을 참고하여 새로운 상품 상세페이지를 설계하기 위한 제작 프로토콜입니다.
-
-### 주요 출처
-
-| 출처 | 사용 범위 | 비고 |
-|---|---|---|
-| 와디즈 공개 상세페이지 크롤링 데이터 | 섹션 흐름, 후킹 방식, 카피 패턴, GIF/증거 배치, 구매불안 해소 구조 분석 | 원문, 이미지, GIF, 영상은 이 저장소에 포함하지 않습니다. |
-| [OpenCrab](https://opencrab.sh) | pack-backed 제작 시 검색 가능한 와디즈 온톨로지팩과 프로젝트/워크플로우 실행 기반 | 사용자의 OpenCrab 워크스페이스에 별도로 설치되어야 합니다. |
-| [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill) | 상품 인테이크, 컷 구조, 이미지 생성 큐, HTML/ZIP, QA 실행 백본 | 이 저장소에는 와디즈 프로덕션에 필요한 핵심 레퍼런스/스크립트 복사본만 포함합니다. |
-| FMG Luckyball 파일럿 | 제품 사진을 참조로 분석하고 전체 장면을 생성하는 concept workflow 검증 | 특정 상품 전용 규칙이 아니라 QA 사례와 운영 교훈입니다. |
-| 사용자 제공 공식 자료 | 상품별 가격, 혜택, 조건, 약관, 배송, 인증, 로고, 이미지 사실 검증 | 최종 판매용 문구는 이 자료로 별도 확인해야 합니다. |
-
-### 산출물별 출처 표기 원칙
-
-상세페이지 기획서, 컷 블루프린트, 프롬프트 브리프, QA 리포트에는 반드시 다음을 구분해 적어야 합니다.
-
-- `wadiz_pattern_source`: 와디즈/OpenCrab 팩에서 가져온 구조, 흐름, 카피/비주얼 패턴
-- `product_fact_source`: 공식 URL, 판매자 문서, 사용자 제공 자료 등 상품별 사실 출처
-- `asset_source`: 사용하거나 참조한 제품 사진, 로고, 브랜드 에셋, 생성 이미지 방향
-- `example_source`: 럭키볼 같은 파일럿/예시에서 가져온 운영 교훈
-- `not_verified`: 확인되지 않았거나 최종 문구로 쓰면 안 되는 추정
-
-저장소에는 다음을 포함하지 않습니다.
-
-- 와디즈 원본 HTML
-- 와디즈 원본 이미지, GIF, 영상
-- 크롤러 원본 데이터
-- OpenCrab 온톨로지팩 ZIP
-- private OpenCrab project ID, MCP URL, 인증 토큰
-- 특정 상품의 가격, 혜택, 인증, 약관, 배송 정책
-
-상품별 사실은 공식 URL, 판매자 제공 문서, 사용자 승인 자료로 별도 확인해야 합니다.
+`sangse`의 기존 `cuts.md`, `legal.md`, 레거시 이미지 작업을 새 폴더로 가져오는 변환기를 제공합니다. 원본과 거래 조건을 보존하며 변환 보고서에 새 규격의 역호환 제한을 기록합니다. 기존 명령과 기능은 [sangse 저장소](https://github.com/contentscoin/sangse)에서 유지합니다.
 
 ## 라이선스
 
-이 저장소의 스킬 코드와 문서는 MIT License로 배포됩니다. 와디즈 원본 데이터, OpenCrab 온톨로지팩, 타사 상품 이미지나 원문 콘텐츠는 이 라이선스에 포함되지 않습니다.
+이 저장소의 코드·문서는 [MIT](LICENSE)입니다. sangse에서 이식한 자료의 `Copyright (c) 2026 fivetaku`와 MIT 조건은 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)에 보존합니다. 기존 ecommerce 백본의 출처는 [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill)입니다. 와디즈 원본 콘텐츠, OpenCrab 팩, 타사 상품 자료는 이 라이선스에 포함되지 않습니다.
