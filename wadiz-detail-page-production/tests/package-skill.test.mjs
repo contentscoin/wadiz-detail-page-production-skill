@@ -8,7 +8,7 @@ import { packageSkill, verifySkillZip, readStoredZip, encodeStoredZip } from '..
 
 async function fixture() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'wadiz-release-')), skill = path.join(root, 'wadiz-detail-page-production');
-  const files = { 'SKILL.md': '---\nname: wadiz-detail-page-production\ndescription: Test skill\n---\n# Skill\n', 'README.md': '# Install\n', 'release.json': JSON.stringify({ schema_version: 1, name: 'wadiz-detail-page-production', version: '0.3.0', node: '>=20.9.0', repository: 'https://github.com/contentscoin/wadiz-detail-page-production-skill' }), 'scripts/package.json': JSON.stringify({ version: '0.3.0', engines: { node: '>=20.9.0' } }), 'scripts/package-lock.json': '{}', 'schemas/contracts.schema.json': '{}', 'references/workflow.md': '# Workflow\n', 'assets/sangse/style.json': '{"source":"sangse"}', 'scripts/test.mjs': 'export const value = 1;\n', 'scripts/node_modules/dependency/index.js': 'excluded dependency', 'scripts/output/image.png': 'excluded output', 'assets/.env.production': 'excluded env', 'assets/credentials.json': 'excluded credential file', '.git/config': 'excluded git' };
+  const files = { 'SKILL.md': '---\nname: wadiz-detail-page-production\ndescription: Test skill\n---\n# Skill\n', 'README.md': '# Install\n', 'release.json': JSON.stringify({ schema_version: 1, name: 'wadiz-detail-page-production', version: '0.3.0', node: '>=22.0.0', repository: 'https://github.com/contentscoin/wadiz-detail-page-production-skill' }), 'scripts/package.json': JSON.stringify({ version: '0.3.0', engines: { node: '>=22.0.0' } }), 'scripts/package-lock.json': '{}', 'schemas/contracts.schema.json': '{}', 'references/workflow.md': '# Workflow\n', 'assets/sangse/style.json': '{"source":"sangse"}', 'scripts/test.mjs': 'export const value = 1;\n', 'scripts/node_modules/dependency/index.js': 'excluded dependency', 'scripts/output/image.png': 'excluded output', 'assets/.env.production': 'excluded env', 'assets/credentials.json': 'excluded credential file', '.git/config': 'excluded git' };
   for (const [name, data] of Object.entries(files)) { const file = path.join(skill, name); await fs.mkdir(path.dirname(file), { recursive: true }); await fs.writeFile(file, data); }
   await fs.writeFile(path.join(root, 'LICENSE'), 'MIT License\nCopyright (c) 2026 contentscoin\n');
   await fs.writeFile(path.join(root, 'THIRD_PARTY_NOTICES.md'), 'MIT License\nCopyright (c) 2026 fivetaku\n');
@@ -61,9 +61,9 @@ test('selected symlink resources and output-parent symlinks are refused', async 
 test('release metadata mismatches and credential-like data fail before creating an archive', async () => {
   const { root, skill } = await fixture();
   try {
-    const pkg = path.join(skill, 'scripts', 'package.json'); await fs.writeFile(pkg, JSON.stringify({ version: '0.2.0', engines: { node: '>=20.9.0' } }));
+    const pkg = path.join(skill, 'scripts', 'package.json'); await fs.writeFile(pkg, JSON.stringify({ version: '0.2.0', engines: { node: '>=22.0.0' } }));
     await assert.rejects(packageSkill({ skillDir: skill, outFile: path.join(root, 'bad-version.zip') }), /version or Node requirement mismatch/);
-    await fs.writeFile(pkg, JSON.stringify({ version: '0.3.0', engines: { node: '>=20.9.0' } }));
+    await fs.writeFile(pkg, JSON.stringify({ version: '0.3.0', engines: { node: '>=22.0.0' } }));
     await fs.writeFile(path.join(skill, 'assets', 'leak.json'), JSON.stringify({ token: `sk-${'a'.repeat(32)}` }));
     await assert.rejects(packageSkill({ skillDir: skill, outFile: path.join(root, 'bad-secret.zip') }), /Credential-like/);
     assert.equal(await fs.stat(path.join(root, 'bad-secret.zip')).catch(() => null), null);

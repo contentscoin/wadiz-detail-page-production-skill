@@ -6,7 +6,7 @@
 
 ## 설치
 
-Node.js 20.9.0 이상이 필요합니다. GIF 변환에는 PATH에 있는 FFmpeg/FFprobe가 필요하며, 실제 지원 여부는 제작 환경에서 확인합니다.
+Node.js 22.0.0 이상이 필요합니다. GIF 변환에는 PATH에 있는 FFmpeg/FFprobe가 필요하며, 실제 지원 여부는 제작 환경에서 확인합니다.
 
 ### 릴리스 ZIP 설치
 

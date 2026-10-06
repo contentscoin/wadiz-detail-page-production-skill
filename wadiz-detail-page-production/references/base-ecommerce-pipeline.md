@@ -15,7 +15,7 @@ Use the JSON schemas and examples shipped in `schemas/` and `assets/`; do not gu
 
 ## Planning commands
 
-Commands below run from the installed skill folder. Node.js 20.9.0 or newer and the dependencies in `scripts/package.json` are required.
+Commands below run from the installed skill folder. Node.js 22.0.0 or newer and the dependencies in `scripts/package.json` are required.
 
 ```powershell
 node scripts/check-opencrab-evidence.mjs product-brief.json opencrab-raw.json --out evidence-matrix.json

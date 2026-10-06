@@ -90,11 +90,29 @@ export function importSangseDocuments(sourceFiles, options = {}) {
   return { productBrief, pagePlan, mediaJobs, report };
 }
 
+async function canonicalTarget(target) {
+  let current = path.resolve(target);
+  const missing = [];
+  for (;;) {
+    try { return path.join(await fs.realpath(current), ...missing.reverse()); }
+    catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      const parent = path.dirname(current);
+      if (parent === current) throw error;
+      missing.push(path.basename(current)); current = parent;
+    }
+  }
+}
+
 export async function importSangseProject(sourceDir, outputDir, options = {}) {
   const source = await fs.realpath(sourceDir);
-  const out = path.resolve(outputDir);
+  // Resolve existing ancestors as well as the source. Windows runner temp paths
+  // can use DOS short names; a string-only relative check would treat the same
+  // source directory as an unrelated location and permit writes inside it.
+  const out = await canonicalTarget(outputDir);
   const relative = path.relative(source, out);
-  if (!relative || (!relative.startsWith('..') && !path.isAbsolute(relative))) throw new Error('--out must be a new directory outside the source project.');
+  const outside = relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative);
+  if (!relative || !outside) throw new Error('--out must be a new directory outside the source project.');
   // Exclusive directory creation prevents partial overwrite of a previous run.
   try { await fs.stat(out); throw new Error(`Output already exists: ${out}`); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   const sourceFiles = {};

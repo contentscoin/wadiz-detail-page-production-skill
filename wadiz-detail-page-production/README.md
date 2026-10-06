@@ -15,7 +15,7 @@ Korean detail page with image/GIF delivery and source-bound copy.
 
 ## 설치
 
-Node.js 20.9.0 이상에서 저장소 루트에서 설치합니다. 스킬 실행에 필요한 스키마·자산·스크립트와 저작권 고지를 함께 복사합니다.
+Node.js 22.0.0 이상에서 저장소 루트에서 설치합니다. 스킬 실행에 필요한 스키마·자산·스크립트와 저작권 고지를 함께 복사합니다.
 
 ```powershell
 $wadizSkillDir = Join-Path $env:USERPROFILE '.codex\skills\wadiz-detail-page-production'

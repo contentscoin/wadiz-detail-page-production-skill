@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Layer composition, long-image assembly, and mechanical QA scripts for the wadiz-detail-page-production skill.",
-  "engines": { "node": ">=20.9.0" },
+  "engines": { "node": ">=22.0.0" },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
     "sharp": "^0.35.5"

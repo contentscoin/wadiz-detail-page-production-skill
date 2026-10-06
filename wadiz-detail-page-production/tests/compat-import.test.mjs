@@ -74,6 +74,19 @@ test('filesystem import preserves source bytes and refuses overwrite', async () 
   assert.ok(!qa.errors.some(error => error.code === 'media_job_missing'));
   await assert.rejects(importSangseProject(source, output), /already exists/);
   await assert.rejects(importSangseProject(source, path.join(source, 'new')), /outside/);
+  await assert.rejects(importSangseProject(source, path.join(source, '..nested')), /outside/);
+});
+
+test('source aliases cannot redirect an import output into the source project', async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'sangse-alias-'));
+  try {
+    const source = path.join(root, 'source'), alias = path.join(root, 'alias');
+    await fs.mkdir(source); await fs.writeFile(path.join(source, 'cuts.md'), cuts);
+    await fs.symlink(source, alias, process.platform === 'win32' ? 'junction' : 'dir');
+    await assert.rejects(importSangseProject(source, path.join(alias, 'new')), /outside/);
+    assert.equal(await fs.stat(path.join(source, 'new')).catch(() => null), null);
+    assert.equal(await fs.readFile(path.join(source, 'cuts.md'), 'utf8'), cuts);
+  } finally { await fs.rm(root, { recursive: true, force: true }); }
 });
 
 test('explicit baseline reference creates linked pending media jobs without claiming verification', () => {

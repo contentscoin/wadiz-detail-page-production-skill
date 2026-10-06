@@ -119,7 +119,7 @@ export async function packageSkill({ skillDir = path.resolve(path.dirname(fileUR
     files.set(name, bytes);
   }
   const release = JSON.parse(files.get('release.json')?.toString('utf8') ?? 'null');
-  if (!release || release.schema_version !== 1 || release.name !== NAME || !/^\d+\.\d+\.\d+$/.test(release.version) || release.node !== '>=20.9.0' || typeof release.repository !== 'string') throw new Error('Valid release.json is required');
+  if (!release || release.schema_version !== 1 || release.name !== NAME || !/^\d+\.\d+\.\d+$/.test(release.version) || release.node !== '>=22.0.0' || typeof release.repository !== 'string') throw new Error('Valid release.json is required');
   const pkg = JSON.parse(files.get('scripts/package.json')?.toString('utf8') ?? 'null');
   if (pkg?.version !== release.version || pkg?.engines?.node !== release.node) throw new Error('Release/package version or Node requirement mismatch');
   const manifest = { schema_version: 1, name: release.name, version: release.version, node: release.node, repository: release.repository, files: [...files].sort(([a], [b]) => a.localeCompare(b, 'en')).map(([name, bytes]) => ({ path: name, bytes: bytes.length, sha256: hash(bytes) })) };
