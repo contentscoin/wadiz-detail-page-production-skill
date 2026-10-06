@@ -1,130 +1,91 @@
-# Base Ecommerce Pipeline
+# Base ecommerce pipeline and CLI contract
 
-This file is the self-contained execution backbone cloned from the older
-`ecommerce-detail-page` skill. The Wadiz production skill extends this pipeline;
-it must not replace it with OpenCrab lookup alone.
+This reference describes the executable pipeline inside the installed Wadiz skill. The older [base-ecommerce-clone/](base-ecommerce-clone/) remains a compatibility/history resource. The current adaptive compiler owns new plans; OpenCrab provides reference evidence and sangse supplies purchase-question, copy-slot, and numeric-link checks.
 
-## Role Split
+## Inputs and artifacts
 
-Use these roles when the Wadiz skill is active:
-
-| Layer | Responsibility |
+| Contract | Purpose |
 |---|---|
-| Base ecommerce/service pipeline | product/service intake, product photo or service proof analysis, category/style choice, exact cut count, cut plan, approved copy, image prompt/job queue, parallel generation, gallery/ZIP, QA, regen queue |
-| OpenCrab Wadiz ontology packs | choose Wadiz-style section flow, hook type, copy density, proof/GIF placement, objection handling, offer structure, claim-evidence rules, visual/OCR QA rules |
-| Detail page reference analyzer | privately analyze external reference/detail pages, collect reference images, reverse-plan reusable patterns |
-| Wadiz production skill | orchestrate the above, enforce gates, keep product facts separate from reference patterns, and report concept vs publication readiness honestly |
+| `ProductBrief` | Product name, category/topic, SKU/options, audience, source-backed facts, reference assets, and unknowns |
+| `PagePlan` | Ordered sections with role, customer questions, copy, fact/evidence links, visual direction, placement reason, and media job |
+| `MediaJob` | Image/GIF intent, reference files, requested/confirmed model, storyboard, status, and result provenance |
+| `DeliveryManifest` | Ordered output media, posters, paths, truth/source information, QA and publication status |
 
-## Default Execution Order
+Use the JSON schemas and examples shipped in `schemas/` and `assets/`; do not guess field names from prose. Work in a fresh output directory so source briefs and legacy artifacts are preserved.
 
-1. Classify request: setup, planning, prompt brief, concept generation, final production, QA repair, or packaging.
-2. Classify offer type: physical product, service/intangible, membership/subscription, course/program, B2B/professional package, event/experience, or hybrid.
-3. Intake product/service facts and source links. Mark missing facts as `confirmation_needed`.
-4. For physical products, check product photos or reference images before planning.
-5. For services/intangibles, analyze service evidence before planning: process, people, proof, deliverables, environment, operating terms, policy/caution copy, and buyer scenarios.
-6. If photos exist, analyze product shape, material, label/logo, color, visible facts, photo quality, and best cut usage.
-7. Decide whether photos/proof assets are `actual_asset`, `reference_only`, `regeneration_recommended`, or `not_usable`.
-8. Query OpenCrab Wadiz packs when available and fill the evidence matrix.
-9. Select a 12-cut or 15-cut structure from Wadiz evidence first, then base ecommerce/service defaults.
-10. Write cut-by-cut role, headline, subcopy, in-image Korean text or separate text-panel copy, visual direction, facts/evidence, and QA notes.
-11. Build `fact-map.json`, `cut-plan.json`, prompt files, and `imagegen-jobs.json` before any image generation.
-12. Launch one independent cut job per cut when image generation is allowed. Keep the cut count exact.
-13. Build gallery HTML and ZIP only for generated artifacts that the current gate allows.
-14. Run QA: file count, dimensions, OCR/text match, layout/readability, product/service consistency, claim alignment, asset truth, and ZIP integrity.
-15. Put only failed cuts in `regen-queue.json`; regenerate failed cuts only.
-16. Report the state as concept-ready, publication-blocked, or publication-ready.
+## Planning commands
 
-## Cut Count Contract
+Commands below run from the installed skill folder. Node.js 22.0.0 or newer and the dependencies in `scripts/package.json` are required.
 
-- Default physical product: 12 mobile cuts.
-- High-consideration service, membership, subscription, course, B2B/professional package, event/experience, or policy-heavy offer: 15 cuts.
-- If a non-product offer is simple, 12 cuts are allowed only after merging repeated proof/policy sections intentionally.
-- If the user chooses a count, output exactly that count.
-- Do not collapse a 12-cut or 15-cut plan into one image unless explicitly asked.
-- For image pages, use 1080 x 1600 per cut by default. Long images are derived packaging, not the source of truth.
-
-## Service / Intangible Offer Policy
-
-When there is no physical product photo, do not degrade into generic branding, a company homepage, or abstract mood cuts. Use service evidence instead:
-
-- Treat process, people, proof, deliverables, environment, terms, and buyer scenarios as the service equivalent of product specs.
-- Read `service-intangible-detail-page.md` and choose the 15-cut service story spine unless the offer is clearly simple.
-- Build visuals around real evidence roles: journey diagram, expert proof, scene proof, deliverable proof, use-case scenarios, offer cards, FAQ/policy cards, and CTA.
-- If real service-scene photos or proof assets are missing, concept visuals may be generated only with concept/publication-blocked labels.
-- Named experts or professionals require verified bios; otherwise exclude them from customer-facing claims.
-- Outcomes must be bounded; avoid guaranteed success, revenue, health, legal, tax, or financial claims.
-
-## Product Photo Policy
-
-When a user provides a product photo:
-
-- Treat it as the visual source of truth for product shape, color, logo placement, label location, material, and distinctive details.
-- Do not automatically cut it out and composite it into every section.
-- If the photo is weak but product details are clear, prefer full-scene generation from product-detail analysis.
-- Preserve visible product facts, but do not invent unreadable labels, certifications, ingredients, awards, reviews, or policy claims.
-- If exact brand/logo fidelity is mandatory, use an official logo or vector asset in a documented brand-layer pass. Do not pretend the image model reproduced the official mark perfectly.
-
-## Concept Generation Mode
-
-The older ecommerce skill could generate images as drafts. The Wadiz skill may do the same only under a stricter label:
-
-`concept_generation_allowed`
-
-Use this mode when:
-
-- the user explicitly wants visual generation,
-- the product details are enough for a concept,
-- OpenCrab/Wadiz evidence or local production rules have shaped the cut order,
-- product photos are only reference quality or assets are incomplete,
-- and the output is clearly labeled concept-only.
-
-Concept generation may produce cut images, gallery HTML, ZIP, contact sheet, and QA files, but it must not be called final marketplace-ready production.
-
-## Publication Gate
-
-Use `final_production_allowed` only when all are true:
-
-- Wadiz pack retrieval is verified or explicitly replaced by a user-approved structure source.
-- Product/service facts, price, offer, terms, delivery/returns or service operation/refund/cancel rules, and risky claims are confirmed.
-- Required product/package/logo/proof assets are approved or a documented generation route is approved.
-- OCR/text-match is pass or manually approved.
-- Logo fidelity, generated package truth, and legal/policy wording have been checked.
-- ZIP/gallery/manifest/QA artifacts pass validation.
-
-## Required Runtime Artifacts
-
-For serious production or concept generation, create or update:
-
-- `opencrab-runtime-context.md`
-- `fact-map.json`
-- `cut-plan.json`
-- `production-brief.md` or `brief.md`
-- `prompts/cut-XX.md` or a structured prompt set
-- `imagegen-jobs.json`
-- `cuts/` or `cuts/full-scene-1080x1600/`
-- `qa/asset-inventory.json`
-- `qa/text-match*.json`
-- `qa/ocr-results.json`
-- `qa/readability.json`
-- `qa/layout-overlap.json`
-- `qa/product-consistency.json`
-- `qa/claim-alignment.json`
-- `regen-queue.json`
-- `detail-page-manifest.json`
-- `qa-report.md`
-- `index.html` or a named gallery HTML
-- ZIP package when allowed by the current gate
-
-## Completion Labels
-
-Use three separate labels instead of one vague `done`:
-
-```json
-{
-  "concept_generation_status": "not_started | complete | failed",
-  "production_asset_status": "missing | incomplete | ready",
-  "publication_status": "blocked | review_required | ready"
-}
+```powershell
+node scripts/check-opencrab-evidence.mjs product-brief.json opencrab-raw.json --out evidence-matrix.json
+node scripts/compile-page-plan.mjs product-brief.json --out project --evidence opencrab-raw.json
+node scripts/validate-page-plan.mjs project
 ```
 
-This prevents a strong concept draft from being mistaken for a finished sales page.
+`check-opencrab-evidence` assesses raw retrieval relevance and provenance. `compile-page-plan` creates a draft structured plan, copy, media jobs, and planning documents. `validate-page-plan` writes `qa/plan-qa.json`. Refine generated copy to its actual slots, resolve missing-fact markers, and revalidate. A successful compilation alone is not approved or finished retail copy.
+
+Inspect the actual plan and source facts, then record approval of the current copy snapshot before generation. The read-only snapshot command is:
+
+```powershell
+node scripts/build-delivery-package.mjs project --review-snapshot
+```
+
+The approval records `page-plan.json`'s `copy_approval` as `{ "status": "approved", "snapshot_sha256": "<reviewed snapshot hash>" }`. Review the reported inputs before setting it. A changed source/plan invalidates the previous approval. Approval files do not represent an unobserved human decision.
+
+Optional `--style <id>` chooses `checkpoint`, `lookbook`, `offer-first`, `proof-first`, `spec-showcase`, or `story-first`. `--preset 12` or `--preset 15` preserves an explicitly selected legacy cut count. Without a preset, category/topic/product requirements determine section count and order. The compiler's purchase-question coverage does not require one section for each question.
+
+## Image handoff
+
+```powershell
+node scripts/prepare-media-jobs.mjs project/media-jobs.json --out project/request-plan.json
+```
+
+Read-only discovery is the default. A deployment with verified runtime information may supply `--capabilities <file>`; that file must describe actual runtime capabilities rather than a wish to use 2.5. Only `codex_native` and `ima2` are supported. The prepared plan is a handoff to the image tool, not evidence that generation occurred.
+
+Require exact GPT Image 2.5 availability and reference forwarding; verify editing when the job requires it. The native image tool's public arguments may lack model selection/confirmation. ima2 may be installed while its server is unreachable. Those conditions produce blocked jobs; do not claim generation or substitute another model/backend. Before a paid invocation, present the expected usage/cost and obtain scope approval.
+
+For an approved handoff, also supply `--approval <approval.json>`; this file names the approved jobs and expected usage. It does not invoke generation. Read [media-production.md](media-production.md) for the exact capability, approval, and tool-result formats.
+
+After actual tool execution, import the returned model/reference/output provenance:
+
+```powershell
+node scripts/import-media-result.mjs project/request-plan.json --job section-job-id --result tool-result.json --out project/media-results.json
+```
+
+Verify product identity and rendered copy. Required approval/status/result fields are defined by the shipped schemas and preparation report. Model/reference/output hashes bind the recorded result to the job, but manual visual checks still require observing the output.
+
+For image sections with `hybrid` or `svg_layer` text, generate a text-free scene (no prices, specs, policies or invented lettering), import that result, then compose exact copy:
+
+```powershell
+node scripts/compose-media-text.mjs project --out project/composed-results.json
+```
+
+The original image and result file stay unchanged. The new result records base generation provenance, composition/copy/SVG hashes, and a separate editable text SVG. Default output is 1080 × 1600 with image above and text below. Korean glyph coverage and actual rendered widths are checked; unreadable characters, small fonts and overflow fail rather than clip. `--height`, `--image-height`, or an explicit Korean `--font-file`/`--font-family` can adapt the panel. Review the composed output again; earlier image review flags are not automatically reused. GIFs keep animation and essential copy in adjacent static information.
+
+## GIF and packaging
+
+```powershell
+node scripts/build-motion-cut.mjs motion-config.json
+node scripts/build-delivery-package.mjs project --out delivery
+node scripts/build-delivery-package.mjs project --media-results project/composed-results.json --out composed-delivery
+```
+
+Use image-frame sequences for option changes, explanations, and illustrative scenes. Use supplied actual footage for operation/performance evidence. A generated before/after is a concept, not an observed product outcome. No AI video model is invoked. Inspect the GIF and poster; the conversion report cannot judge product distortion, copy readability, or truthfulness by itself.
+
+Delivery includes image/GIF files, posters, an ordered preview, manifest, QA report, and ZIP. Long-image output is optional and static; GIFs remain separate files. Default packaging is a preview. `--publication` requests strict publication checks and rejects pending reviews instead of converting them into a passing result.
+
+Use `--media-results` for the new composition results without overwriting the imported originals. Delivery rechecks the base generation, exact approved copy, editable SVG, font, and reconstructed composite pixels, and packages the base image/SVG with the final output.
+
+## Legacy sangse import
+
+```powershell
+node scripts/import-sangse.mjs legacy-project --out imported-project
+node scripts/convert-legacy-jobs.mjs legacy-image-jobs.json --out media-jobs.json
+```
+
+Keep `cuts.md`, `legal.md`, and legacy image jobs unchanged. Import into a fresh directory, inspect preserved copy and trading terms, and review the compatibility report. Imported facts start as `confirmation_needed` with source review incomplete. Optional `--category`, `--topic`, `--product-name`, and `--style` resolve legacy metadata; they do not verify facts. Legacy model/backend data is history, not GPT Image 2.5 capability. New adaptive section/GIF/provenance fields may not export back to the old format; report that limitation instead of silently discarding data. See [sangse-compatibility.md](sangse-compatibility.md).
+
+## Practical completion checks
+
+Check actual section order and media count against the plan, product/option/brand fidelity, mobile copy, exact prices/policies, image and GIF dimensions, GIF playback/loop/size, poster fallback, and archive contents. Regenerate or rebuild only failed media and recheck the affected sections. Separate concept completion, asset completeness, and publication approval.

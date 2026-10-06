@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "categories": {
+    "food": {"label":"식품", "keywords":["식품","음식","원재료","영양","섭취","보관","food","ingredient"], "required":["ingredients","capacity","usage","storage","precautions"], "sections":["ingredients","usage","storage"]},
+    "beauty": {"label":"뷰티", "keywords":["뷰티","화장품","피부","성분","cosmetic","beauty","skin"], "required":["ingredients","suitability","usage","precautions"], "sections":["ingredients","suitability","usage"]},
+    "tech": {"label":"가전·테크", "keywords":["가전","이어폰","배터리","전원","호환","전자","appliance","battery","wireless"], "required":["specifications","compatibility","power","support"], "sections":["specifications","compatibility","power"]},
+    "fashion": {"label":"패션", "keywords":["패션","의류","소재","착용","사이즈","fashion","clothing","fabric"], "required":["material","size","fit","care"], "sections":["material","size","fit"]},
+    "living": {"label":"생활·리빙", "keywords":["생활","주방","가구","세척","설치","kitchen","furniture","living"], "required":["material","dimensions","installation","care"], "sections":["material","dimensions","installation"]},
+    "service": {"label":"서비스", "keywords":["서비스","강의","과정","상담","멤버십","service","course","membership"], "required":["process","deliverables","eligibility","schedule","cancellation"], "sections":["process","deliverables","eligibility","schedule"]}
+  },
+  "topics": {
+    "gift": {"style":"lookbook", "hook":"누구에게 어떤 선물인가요?", "opening":["recipient","reveal","components"], "motion":"구성품·포장 순서", "reason":"받는 사람과 선물 구성을 먼저 설명합니다."},
+    "problem_solution": {"style":"story-first", "hook":"어떤 불편을 해결하나요?", "opening":["problem","reveal","benefit"], "motion":"사용 단계 설명", "reason":"고객의 불편과 해결 방식을 연결합니다."},
+    "new_product": {"style":"checkpoint", "hook":"이번 상품에서 달라진 것은?", "opening":["reveal","mechanism","benefit"], "motion":"새 구조·구성 설명", "reason":"새로움의 내용과 근거를 함께 설명합니다."},
+    "premium": {"style":"proof-first", "hook":"선택의 기준은 무엇인가요?", "opening":["reveal","material","proof"], "motion":"소재·디테일 순차 강조", "reason":"가치의 근거와 디테일을 먼저 보여줍니다."},
+    "comparison": {"style":"spec-showcase", "hook":"어떤 기준으로 비교하나요?", "opening":["problem","comparison","reveal"], "motion":"검증된 옵션 비교", "reason":"비교 기준과 출처가 같은 항목만 비교합니다."},
+    "relaunch": {"style":"offer-first", "hook":"다시 소개하는 이유는?", "opening":["reveal","changes","proof"], "motion":"검증된 변경점 순차 설명", "reason":"이전 상품과 달라진 사실을 먼저 확인합니다."}
+  },
+  "roles": {
+    "hero":{"title":"상품과 고객 장면","questions":["Q1"]},
+    "recipient":{"title":"선물 받는 사람과 상황","questions":["Q1"]},
+    "problem":{"title":"고객이 겪는 불편","questions":["Q1"]},
+    "reveal":{"title":"상품 소개","questions":["Q2"]},
+    "benefit":{"title":"사용 가치","questions":["Q2"]},
+    "mechanism":{"title":"작동·설계 방식","questions":["Q3"]},
+    "proof":{"title":"확인 가능한 근거","questions":["Q3","Q4"]},
+    "usage":{"title":"사용 순서","questions":["Q4","Q5"]},
+    "components":{"title":"옵션과 구성품","questions":["Q6"]},
+    "offer":{"title":"가격과 제공 조건","questions":["Q6"]},
+    "faq":{"title":"구매 전 궁금한 점","questions":["Q7"]},
+    "policy":{"title":"배송·교환·취소 조건","questions":["Q7"]},
+    "cta":{"title":"선택 안내","questions":["Q8"]},
+    "comparison":{"title":"출처가 있는 비교","questions":["Q3"]},
+    "changes":{"title":"검증된 변경점","questions":["Q3"]}
+  }
+}

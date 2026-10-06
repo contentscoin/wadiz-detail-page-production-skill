@@ -1,0 +1,59 @@
+name: Skill CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['22', '24']
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: wadiz-detail-page-production/scripts/package-lock.json
+      - name: Linux Korean fonts and FFmpeg
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk ffmpeg
+      - name: Windows Korean font and FFmpeg
+        if: runner.os == 'Windows'
+        run: |
+          if (-not (Test-Path -LiteralPath 'C:/Windows/Fonts/malgun.ttf')) {
+            Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/google/fonts/7085eb89a950e85db5b166b7a58d414544b4140c/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf' -OutFile 'C:/Windows/Fonts/NotoSansKR-VF.ttf'
+          }
+          if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue)) { choco install ffmpeg -y --no-progress }
+          ffmpeg -version
+          ffprobe -version
+      - name: Install and test
+        working-directory: wadiz-detail-page-production/scripts
+        run: |
+          npm ci
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Self-contained package and standard ZIP smoke test
+        run: |
+          $releaseFile = Join-Path $env:RUNNER_TEMP 'wadiz-detail-page-production-v0.3.0.zip'
+          node wadiz-detail-page-production/scripts/package-skill.mjs --out $releaseFile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node wadiz-detail-page-production/scripts/package-skill.mjs --verify $releaseFile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -c "import sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; assert 'wadiz-detail-page-production/SKILL.md' in z.namelist(); assert 'wadiz-detail-page-production/THIRD_PARTY_NOTICES.md' in z.namelist(); print('Standard ZIP and skill structure: verified')" $releaseFile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

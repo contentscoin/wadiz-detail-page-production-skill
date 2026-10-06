@@ -1,16 +1,20 @@
 {
   "name": "wadiz-detail-page-production-scripts",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "Layer composition, long-image assembly, and mechanical QA scripts for the wadiz-detail-page-production skill.",
-  "engines": { "node": ">=18" },
+  "engines": { "node": ">=22.0.0" },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "sharp": "^0.33.5"
+    "sharp": "^0.35.5"
   },
   "scripts": {
     "compose": "node compose-layers.mjs",
     "long-image": "node build-long-image.mjs",
-    "qa": "node qa-detail-page.mjs"
+    "qa": "node qa-detail-page.mjs",
+    "plan": "node compile-page-plan.mjs",
+    "validate-plan": "node validate-page-plan.mjs",
+    "test": "node --test ../tests/*.test.mjs tests/*.test.mjs"
   }
 }

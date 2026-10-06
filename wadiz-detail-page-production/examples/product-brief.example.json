@@ -1,0 +1,9 @@
+{
+  "schema_version":1,
+  "product":{"name":"예시 무선 이어폰","category":"tech","topic":"problem_solution","sku":"EXAMPLE","options":[],"target_customer":"대중교통으로 출퇴근하는 사용자"},
+  "facts":[],
+  "assets":[],
+  "unknowns":["확정된 사용 가치와 기능","공식 가격·배송·교환 조건","상품 기준 이미지"],
+  "source_links":[],
+  "generation":{"backend":"codex_native","model":"gpt-image-2.5-sunburst"}
+}

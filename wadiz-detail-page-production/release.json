@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "name": "wadiz-detail-page-production",
+  "version": "0.3.0",
+  "node": ">=22.0.0",
+  "repository": "https://github.com/contentscoin/wadiz-detail-page-production-skill"
+}

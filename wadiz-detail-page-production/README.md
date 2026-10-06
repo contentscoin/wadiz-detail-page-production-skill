@@ -1,104 +1,56 @@
-# 와디즈 상세페이지 프로덕션 스킬
+# Wadiz Detail Page Production
 
-`wadiz-detail-page-production`은 와디즈 스타일의 한국어 이커머스/서비스 상세페이지를 기획, 콘셉트 이미지 생성, QA, 패키징하기 위한 공유 스킬팩입니다. Codex/OpenAI용 adapter를 포함하지만 Hermes, Cursor/Claude, 로컬 CLI에서도 같은 core 규칙을 사용할 수 있도록 runtime-specific 전제는 분리합니다.
+이 폴더가 설치되는 공통 스킬입니다. 카테고리·주제·상품별 기획부터 카피 검증, OpenCrab 근거, GPT Image 2.5 작업 준비, 실제 GIF, 미리보기/ZIP 납품을 연결합니다.
 
-이 스킬은 단순 카피 작성 스킬이 아니라, 기존 상세페이지 제작 파이프라인 위에 OpenCrab 와디즈 온톨로지팩을 얹은 제작 프로토콜입니다.
+배포 메타데이터는 `release.json`의 v0.3.0입니다. 설치 ZIP에는 이 폴더와 `LICENSE`, `THIRD_PARTY_NOTICES.md`, `PACKAGE-MANIFEST.json`, `SHA256SUMS`가 함께 있습니다. ZIP을 풀어 해당 폴더를 비어 있는 새 스킬 경로에 복사한 뒤 `scripts/`에서 `npm ci`를 실행합니다. 기존 설치 폴더는 먼저 별도 백업해 새 버전과 파일을 섞지 않습니다. 전체 ZIP 체크섬은 배포된 `.zip.sha256`와 대조합니다.
 
-## 핵심 구조
+## 사용
 
-| 레이어 | 역할 |
-|---|---|
-| `ecommerce-detail-page` 백본 | 상품 인테이크, 사진 분석, 컷 수 확정, 컷별 카피, 프롬프트/job 큐, 이미지 생성, HTML/ZIP, OCR QA, 재생성 |
-| OpenCrab 와디즈 온톨로지팩 | 와디즈식 섹션 흐름, 후킹 방식, 카피 밀도, GIF/증거 위치, 구매불안 해소, 오퍼 구조, claim-evidence 규칙 |
-| `detail-page-reference-analyzer` | 기존 상세페이지/URL/레퍼런스 역기획과 비공개 참고 분석 |
-| `wadiz-detail-page-production` | 위 레이어들을 조립하고 pack/fact/asset/concept/publication/QA 게이트를 관리 |
+```text
+Use $wadiz-detail-page-production to plan, validate, and produce a product-specific
+Korean detail page with image/GIF delivery and source-bound copy.
+```
+
+`SKILL.md`에서 시작하고 요청 단계에 필요한 레퍼런스만 읽습니다. 기본 기획은 가변 섹션이고 12/15컷은 호환 프리셋입니다. sangse의 8가지 구매 질문은 고객 판단의 누락을 검사하며 한 가지 순서를 강제하지 않습니다.
 
 ## 설치
 
-### Codex/OpenAI
-
-Codex 로컬 스킬 폴더에 복사합니다.
+Node.js 22.0.0 이상에서 저장소 루트에서 설치합니다. 스킬 실행에 필요한 스키마·자산·스크립트와 저작권 고지를 함께 복사합니다.
 
 ```powershell
-# 저장소 루트에서 실행
-Copy-Item -Recurse ".\skills\wadiz-detail-page-production" "$env:USERPROFILE\.codex\skills\wadiz-detail-page-production" -Force
+$wadizSkillDir = Join-Path $env:USERPROFILE '.codex\skills\wadiz-detail-page-production'
+if (Test-Path -LiteralPath $wadizSkillDir) { throw '기존 스킬을 별도 백업한 뒤 새 설치 폴더를 준비해 주세요.' }
+New-Item -ItemType Directory -Path $wadizSkillDir | Out-Null
+Copy-Item -Recurse '.\wadiz-detail-page-production\*' $wadizSkillDir
+Copy-Item '.\LICENSE' $wadizSkillDir
+Copy-Item '.\THIRD_PARTY_NOTICES.md' $wadizSkillDir
+Push-Location (Join-Path $wadizSkillDir 'scripts')
+npm ci
+Pop-Location
 ```
 
-### Hermes / 기타 agent
+다른 에이전트는 동일 폴더를 해당 환경의 스킬 경로에 등록합니다. 런타임·개인 프로필·토큰은 별도 설정이며 [platform-and-runtime-adapters.md](references/platform-and-runtime-adapters.md)를 따릅니다.
 
-Hermes에서는 이 repo의 `wadiz-detail-page-production/` 폴더를 프로필 skill tree에 설치하거나 symlink합니다. 다른 agent에서는 해당 agent의 skill/plugin 폴더 규칙에 맞춰 같은 폴더를 등록합니다.
+## 레퍼런스
 
-설치 후 다음처럼 호출합니다.
+| 요청 | 읽을 파일 |
+|---|---|
+| 기획·카피·이미지/GIF·납품 판단 | [production-workflow.md](references/production-workflow.md) |
+| 실행 명령·인터페이스·레거시 import | [base-ecommerce-pipeline.md](references/base-ecommerce-pipeline.md) |
+| 상품군별 필수 정보·주제별 구조 | [category-playbooks/README.md](references/category-playbooks/README.md) |
+| 이미지 handoff·결과 출처·GIF 설정 | [media-production.md](references/media-production.md) |
+| 팩 설치와 검색 가능 여부 | [opencrab-public-install.md](references/opencrab-public-install.md) |
+| 한글·가격·규격·정책의 정확한 텍스트 | [layered-production.md](references/layered-production.md) |
+| 기존 사례의 조건부 QA·디자인 개선 | [case-history-routing.md](references/case-history-routing.md) |
 
-```text
-Use $wadiz-detail-page-production to plan, generate concept cuts, QA, or package a Wadiz-style Korean ecommerce detail page.
-```
+## 실행과 완료
 
-한국어 요청 예시:
+이미지 생성은 `codex_native`/`ima2`로 실제 GPT Image 2.5와 참조 전달 지원이 확인된 경우만 진행합니다. 준비된 요청을 실제 도구로 실행하고 반환 결과의 모델·참조·파일 출처를 기록해야 합니다. 별도 API 경로와 구형 모델 자동 대체는 없습니다. 유료 생성 전 예상 사용량/비용과 범위 승인이 필요합니다.
 
-```text
-와디즈 스타일로 이 상품 상세페이지 15컷 기획하고 콘셉트 이미지까지 만들어줘.
-```
+GIF는 이미지 프레임 또는 제공된 실사 영상으로 제작하며 FFmpeg/FFprobe가 필요합니다. 성능 증명에는 실사 근거를 사용합니다. 이미지/GIF 실물 검수, 상품/카피/정책 일치, 순서·미리보기·ZIP 검사 결과를 남기고, concept/자산 완성/publication 상태를 따로 기록합니다.
 
-## 필수 게이트
+팩 조회나 자산이 부족하면 기획·프롬프트·조건부 콘셉트 상태를 표시합니다. OpenCrab 사례와 생성 장면은 상품 사실·실제 리뷰·인증을 대신하지 않습니다.
 
-| 상태 | 의미 | 허용되는 결과물 |
-|---|---|---|
-| `pack_not_verified` | OpenCrab 와디즈팩 설치/검색이 확인되지 않음 | 기획 골격, 필요팩 안내 |
-| `pack_retrieval_weak` | 팩은 있으나 검색 결과가 메타데이터/핸드오프 수준 | 근거 보강 리포트, production brief |
-| `asset_gate_conditional` | 기획은 가능하지만 최종 판매용 자산이 부족 | 컷블루프린트, 프롬프트 브리프 |
-| `concept_generation_allowed` | 사용자가 명시적으로 콘셉트 생성을 원하고 제품 참조가 충분함 | 콘셉트 이미지, 갤러리, ZIP, QA 리포트 |
-| `final_production_allowed` | pack/fact/asset/OCR/logo/policy/claim 게이트 통과 | 최종 판매 후보 상세페이지 패키지 |
+## 출처
 
-## 콘셉트와 최종본 구분
-
-콘셉트 이미지가 잘 나왔다고 곧바로 판매용 최종본은 아닙니다.
-
-스킬은 결과 상태를 반드시 나눕니다.
-
-```json
-{
-  "concept_generation_status": "not_started | complete | failed",
-  "production_asset_status": "missing | incomplete | ready",
-  "publication_status": "blocked | review_required | ready"
-}
-```
-
-최종 판매용으로 부르려면 다음 검증이 필요합니다.
-
-- OCR/text-match 통과 또는 수동 승인
-- 공식 로고/브랜드 에셋 확인
-- 생성된 패키지/박스/증거 이미지의 truth level 확인
-- 가격, 할인, 보상, 배송, 취소, 약관 문구의 정책 승인
-- claim alignment와 법적 위험 표현 제거
-
-## 럭키볼 파일럿에서 반영된 교훈
-
-FMG Luckyball 작업에서는 상품 사진을 그대로 누끼 합성하는 방식보다, 사진에서 제품 디테일을 분석한 뒤 전체 장면을 생성하는 방식이 더 좋은 결과를 냈습니다.
-
-따라서 이 스킬은 다음 규칙을 가집니다.
-
-- 사용자 제공 사진은 제품 형태, 색상, 로고 위치, 재질, 인쇄 위치를 파악하는 참조로 우선 사용합니다.
-- 사용자가 명시하지 않으면 원본 상품 이미지를 단순 합성하지 않습니다.
-- 자산이 부족한 상태에서 생성한 이미지는 `concept`으로만 표시합니다.
-- OCR, 로고, 패키지 진실성, 정책 문구가 통과되기 전에는 publication-ready로 부르지 않습니다.
-
-## 출처와 경계
-
-- 기본 상세페이지 제작 파이프라인은 기존 `ecommerce-detail-page` 스킬을 백본으로 사용합니다.
-- 와디즈식 흐름과 설득 구조는 사용자의 OpenCrab 와디즈 온톨로지팩을 조회하여 적용합니다.
-- 와디즈 원본 페이지의 이미지, GIF, 문구를 복제하는 목적이 아닙니다.
-- OpenCrab 팩은 구조, 리듬, 소구점, 증거 배치, QA 규칙을 참고하는 용도이며, 특정 상품의 가격/혜택/약관/인증 사실을 대신 증명하지 않습니다.
-- 상품별 사실은 공식 URL, 판매자 제공 문서, 사용자 승인 자료로 별도 확인해야 합니다.
-
-## 포함 파일
-
-- `SKILL.md`: 스킬 진입점과 운영 규칙
-- `agents/openai.yaml`: Codex/OpenAI 표시명과 보수적인 기본 호출문
-- `references/platform-and-runtime-adapters.md`: Hermes/Codex/OpenAI/기타 agent 간 공유 repo 경계와 adapter 규칙
-- `references/production-workflow.md`: 실제 제작 워크플로우
-- `references/base-ecommerce-pipeline.md`: ecommerce 백본 실행 계약
-- `references/base-ecommerce-clone/`: 기존 ecommerce-detail-page 핵심 레퍼런스/스크립트 복사본
-- `references/luckyball-pilot-lessons.md`: 럭키볼 파일럿에서 나온 QA/생성 교훈
-- `references/opencrab-public-install.md`: OpenCrab 공개팩 설치 안내
-- `references/source-and-boundary.md`: 출처와 사용 경계
+공통 구매 질문·스타일·카피 검증은 [contentscoin/sangse](https://github.com/contentscoin/sangse), 기존 ecommerce 백본은 [aisyncclub/detail_page_codex_skill](https://github.com/aisyncclub/detail_page_codex_skill)을 참고합니다. 설치 시 `LICENSE`와 `THIRD_PARTY_NOTICES.md`를 함께 유지합니다. 원문 와디즈 미디어와 private OpenCrab 인증은 배포하지 않습니다.
